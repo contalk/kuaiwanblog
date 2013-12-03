@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>快玩团队博客</title><link href="http://blog.kuaiwan.com/" rel="alternate"></link><link href="http://blog.kuaiwan.com/feeds/all-zh.atom.xml" rel="self"></link><id>http://blog.kuaiwan.com/</id><updated>2013-11-23T23:00:00+08:00</updated><entry><title>SkyDNS 动手玩</title><link href="http://blog.kuaiwan.com/skydns-get-started.html" rel="alternate"></link><updated>2013-11-23T23:00:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2013-11-23:skydns-get-started.html</id><summary type="html">&lt;h3&gt;资源&lt;/h3&gt;
+&lt;p&gt;github: https://github.com/skynetservices/skydns&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;编译：go build .&lt;/li&gt;
+&lt;li&gt;启动脚本：sudo /home/ken/bin/skydns --domain=kuaiwan.local --data=/home/ken/bin/.skydns_data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;增加DNS解析服务器&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;resolv&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
+&lt;span class="err"&gt;增加&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;nameserver&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;增加DNS记录&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;curl -X PUT -L http://localhost:8080/skydns/services/1001 -d '{"Name":"TestService","Version":"1.0.0","Environment":"Production","Region":"East","Host":"localhost","Port":80,"TTL":4000}'&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;curl -X PUT -L http://localhost:8080/skydns/services/1002 -d '{"Name":"TestService","Version":"1.0.0","Environment":"Production","Region":"East","Host":"192.168.60.61","Port":80,"TTL":4000}'&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;测试&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;dig @localhost testservice.production.kuaiwan.local SRV&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;本地其他客户端可能发送DNS请求给我们的DNS服务器：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;23&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;46&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;59&lt;/span&gt; &lt;span class="n"&gt;Received&lt;/span&gt; &lt;span class="n"&gt;DNS&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;localdomain.&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;127.0.0.1:35947&amp;quot;&lt;/span&gt;
+&lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;23&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;47&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;01&lt;/span&gt; &lt;span class="n"&gt;Received&lt;/span&gt; &lt;span class="n"&gt;DNS&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ken-virtualbox.localdomain.&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;127.0.0.1:52030&amp;quot;&lt;/span&gt;
+&lt;span class="mi"&gt;2013&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;23&lt;/span&gt; &lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;47&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mo"&gt;03&lt;/span&gt; &lt;span class="n"&gt;Received&lt;/span&gt; &lt;span class="n"&gt;DNS&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;gc._msdcs.localdomain.&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;127.0.0.1:33695&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;python客户端使用&lt;/h3&gt;
+&lt;p&gt;内置dns库&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dns&lt;/span&gt; 
+&lt;span class="n"&gt;ans&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resolver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;default_resolver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;testservice.production.kuaiwan.local.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SRV&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;ans&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;expiration&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;ans&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rrset&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;ans&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;answer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;testservice&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;production&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kuaiwan&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;929&lt;/span&gt; &lt;span class="n"&gt;IN&lt;/span&gt; &lt;span class="n"&gt;SRV&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;testservice&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;production&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kuaiwan&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;929&lt;/span&gt; &lt;span class="n"&gt;IN&lt;/span&gt; &lt;span class="n"&gt;SRV&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt; &lt;span class="mf"&gt;192.168&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;60.61&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;注意事项：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;SkyDNS&lt;/span&gt;&lt;span class="err"&gt;是&lt;/span&gt;&lt;span class="n"&gt;TCP&lt;/span&gt;&lt;span class="err"&gt;服务器&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rdclass&lt;/span&gt;&lt;span class="err"&gt;的取值是&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;，表示&lt;/span&gt;&lt;span class="n"&gt;IN&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;rdtype&lt;/span&gt;&lt;span class="err"&gt;的取值是&lt;/span&gt;&lt;span class="n"&gt;SRV&lt;/span&gt;&lt;span class="err"&gt;，取值是&lt;/span&gt;&lt;span class="mi"&gt;33&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使用pyDNS&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;DNS&lt;/span&gt;
+&lt;span class="n"&gt;DNS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ParseResolvConf&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;srv_req&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DNS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Request&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;srv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;srv_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;srv_req&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;testservice.production.kuaiwan.local&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;srv_result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;answers&lt;/span&gt;
+&lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;testservice.production.kuaiwan.local&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;typename&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SRV&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;classstr&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;IN&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;ttl&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;517&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;33&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;rdlength&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;21&lt;/span&gt;&lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;应用&lt;/h3&gt;
+&lt;p&gt;可以考虑改造Rest接口的客户端模块，让其支持解析ServiceName并获取服务IP列表。现在python客户端测试看来默认没有缓存，可能需要自己实现DNS结果缓存机制。&lt;/p&gt;</summary><category term="后台开发"></category><category term="架构"></category></entry><entry><title>《用户体验要素》读书笔记</title><link href="http://blog.kuaiwan.com/read-about-user-experience-elements.html" rel="alternate"></link><updated>2013-03-20T15:00:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2013-03-20:read-about-user-experience-elements.html</id><summary type="html">&lt;p&gt;去年4月份左右就看了。书写得不算惊艳，但是却给我比较大的震撼。因为那段时间非常困惑，快玩3.0的设计搞得焦头烂额；却不知道如何用一种更加清晰简单的方式研究我们的产品。当看到用户体验要素的5层结构时，觉得豁然开朗了。&lt;/p&gt;
+&lt;p&gt;主要讲了用户体验设计最重要的5层结构。表现层、框架层、结构层、范围层、战略层。这些层次逐渐深入。之前我们会从外往里思考问题，往往是在表现层卡住了才想是否是更深层的问题。而难以解决的问题都会指向范围层和战略层。范围层最难的是做取舍，决定什么做什么不做。战略层最难的是没有这一层。&lt;/p&gt;
+&lt;p&gt;书中把功能性产品和信息性产品分开研究的思路对我启发很大。快玩的客户端的不同部分，客户端和网站都有不同。他们的用户体验设计的要求也不同。&lt;/p&gt;
+&lt;p&gt;书中关于5个层级，在时间过程中需要一定程度重叠的观点非常符合实际工作的情况。让每一个层级脱离开来，都很难做到灵活的在不同层级做修正。&lt;/p&gt;
+&lt;p&gt;书中说的领导很多时候直接讲产品特性，而不会讲战略。这一点我深有体会，在我们的工作中很少听到战略这个词。很多时候战略也不是非常清晰的，通常都是边做边想，边想边做的。逼迫领导确定战略，确定范围，是产品设计人员向上管理的重要方面。&lt;/p&gt;
+&lt;p&gt;具体的每个层架的指导写得不是很细，做个参考。做些实践。&lt;/p&gt;</summary><category term="读书笔记"></category><category term="设计"></category><category term="产品"></category></entry><entry><title>《判断与决策》读书笔记</title><link href="http://blog.kuaiwan.com/read-about-the-psychology-of-judgment-and-decision-making.html" rel="alternate"></link><updated>2013-03-14T15:00:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2013-03-14:read-about-the-psychology-of-judgment-and-decision-making.html</id><summary type="html">&lt;h2&gt;知觉&lt;/h2&gt;
+&lt;h3&gt;知觉的选择性&lt;/h3&gt;
+&lt;p&gt;知觉本身就是具有选择性的。即使只是识别一张扑克牌——或是醉酒的感觉——也在很大程度上取决于认知和动机因素。因此，在做任何重大决策或判断之前，很值得停下来想一想并问自己一些关键的问题：我看待事物的方式是否受到了某种动机的驱使？我在看待和处理问题时是否夹杂了自身的预期？我是否与那些与我有不同预期和动机的人交换过意见？通过询问这些问题，决策者可以发现许多能够引起知觉偏差的认知和动机因素。&lt;/p&gt;
+&lt;p&gt;情人眼里出西施，有多少时候是你先想到他是你的情人而觉得他美？我们的知觉就像，在火车站接人时知道客人的衣服颜色时的情况一样。&lt;/p&gt;
+&lt;p&gt;有一次，和曾东梁他们一起去吃火锅。当时我们点了一些啤酒，然后就互相敬酒。喝了两杯后，妹子脸很红，说不能喝了。喝太多酒了。后来，我看到瓶上写的是0度啤酒。跟她们说了，她们都表示不敢相信，她们认为确实喝了酒头晕。那次我喝了好几杯，虽然觉得有点怪，但确实也觉得喝得有点晕了。&lt;/p&gt;
+&lt;h3&gt;认知不协调&lt;/h3&gt;
+&lt;p&gt;众所周知，态度的改变会引起行为的改变。但有关认知不协调理论的研究表明，态度的改变也可能是由于行为的改变所引起。根据认知不协调理论，为了保持一致性，人们常常不得不去改变他们的信念使之与行为一致。许多情况下，人们会扭曲或者忘却他们原有的信念。&lt;/p&gt;
+&lt;p&gt;比如，在母子关系或者恋人关系中。你投入的精力越多，钱越多，你就会觉得越爱他。所以，要让男朋友多为你做一些事情，让他付出成本，从而改变态度。&lt;/p&gt;
+&lt;h3&gt;记忆和事后聪明式偏差&lt;/h3&gt;
+&lt;p&gt;记忆是在提取它的时候才建立起来的。在发生重建的这一瞬间，我们所用到的重建材料也就是那些填补缺失细节的逻辑推断、与原始记忆混合在一起的关联记忆以及其他一些相关信息。&lt;/p&gt;
+&lt;p&gt;事后聪明式偏差是这样一种倾向，它将已经发生的事情视为相对不可避免和显而易见的事情，却忽略了自己的判断实际上已经受到已知结果的影响。&lt;/p&gt;
+&lt;p&gt;就算那些最富有经验的决策者也很可能存在记忆偏差。除了做好仔细的记录并保管好有关过去事件（如回忆、重要谈话、协议等）的记录之外，再没有其他什么更好的方法能够避免出现这些记忆偏差了。记忆从本质来讲具有重建性，并高度取决于情境因素。&lt;/p&gt;
+&lt;h3&gt;情境依赖&lt;/h3&gt;
+&lt;p&gt;1、对比效应
+没有对比，就不知道差别。就无法判断好坏。&lt;/p&gt;
+&lt;p&gt;2、初始效应
+第一印象&lt;/p&gt;
+&lt;p&gt;3、近因效应
+只能记住开始和结束&lt;/p&gt;
+&lt;p&gt;4、晕轮效应
+比如听一些成功人士讲成功学要比听自己同学讲同样的内容有吸引力得多。&lt;/p&gt;
+&lt;p&gt;对比效应说明，在绝对条件下去了解一个人是不可能的。&lt;/p&gt;
+&lt;h2&gt;问题如何影响答案？&lt;/h2&gt;
+&lt;p&gt;可塑性、问题的顺序、虚假意见&lt;/p&gt;
+&lt;p&gt;在一些情况下，在两种不同语境下提供同一个选项会得到不同的回答。&lt;/p&gt;
+&lt;p&gt;当面临损失时，很多人都属于“风险偏好”的，他们往往愿意冒风险去承担更大的损失，也不愿意承受具有相同期望值但确定的损失。面对损失时，人们会更有侥幸心理。&lt;/p&gt;
+&lt;p&gt;人们的答案也可能会受到问题或者选项顺序的影响。这些影响通常很小，但在某些情况下，其影响却可能变得非常深远。&lt;/p&gt;
+&lt;p&gt;多个问题的顺序会影响答案的结果。但选择项不会有太大的影响，最后一个选项往往会被选择得更高。&lt;/p&gt;
+&lt;p&gt;人们的态度和行动之间的相关关系几乎为零。抽象概念与实际行为有极大的区别。&lt;/p&gt;
+&lt;p&gt;衡量一种态度、看法或是偏好，并不是像问个问题那么简单。&lt;/p&gt;
+&lt;p&gt;态度、意见和选择往往具有惊人的可塑性。在许多情况下，问题的措辞对人们的回答有非常重大的影响。因此，我们对问题的结构和情境要特别小心。&lt;/p&gt;
+&lt;p&gt;心理分账：某一结果只是从动作直接结果的角度来描述，还是需要综合考虑这一个动作与其他行为的先前关系。&lt;/p&gt;
+&lt;p&gt;考虑人们的答案是否会随着以下因素而发生变化：&lt;/p&gt;
+&lt;p&gt;1、问题的顺序&lt;/p&gt;
+&lt;p&gt;2、问题出现的情境&lt;/p&gt;
+&lt;p&gt;3、问题是开放式的还是封闭式的&lt;/p&gt;
+&lt;p&gt;4、问题是否经过了过滤&lt;/p&gt;
+&lt;p&gt;5、问题是否包含了某些时髦词句&lt;/p&gt;
+&lt;p&gt;6、答案选项的范围&lt;/p&gt;
+&lt;p&gt;7、答案选项出现的顺序&lt;/p&gt;
+&lt;p&gt;8、是否提供了中间选项&lt;/p&gt;
+&lt;p&gt;9、问题是从收益还是从损失的角度来提问的&lt;/p&gt;
+&lt;h2&gt;决策模型&lt;/h2&gt;
+&lt;p&gt;期望效用理论：”金钱的价值或者说效用随着获得金额的增多而递减。”。&lt;/p&gt;
+&lt;p&gt;理性决策的公理包含以下六条原则：
+1、有序性
+决策者可以对任意两个备选方案进行比较&lt;/p&gt;
+&lt;p&gt;2、占优性
+理性的个体永远都不会采取一个被其他策略占优的策略。&lt;/p&gt;
+&lt;p&gt;3、相消性
+如果有风险的备选方案可能产生的结果中包含了一些完全相同且具有相同概率的结果，那么在对这两个方案进行选择时，就应该忽略那些结果的效用。&lt;/p&gt;
+&lt;p&gt;4、可传递性
+如果A&amp;gt;B, B&amp;gt;C，那么A&amp;gt;C。&lt;/p&gt;
+&lt;p&gt;5、连续性
+如果出现最好结果的概率非常大，决策者总是偏好在最好和最坏的结果中赌博而不是选择一个中间值。&lt;/p&gt;
+&lt;p&gt;6、恒定性
+决策者不会受到备选方案的表现方式的影响。&lt;/p&gt;
+&lt;h3&gt;理性决策的悖论&lt;/h3&gt;
+&lt;p&gt;相消性悖论（阿莱悖论）。对两种选项做出选择时，应该以他们的差异为依据，而不以他们的共同点为依据。&lt;/p&gt;
+&lt;p&gt;不可传递性。和决策的具体原则有关，并非直接可比。&lt;/p&gt;
+&lt;p&gt;自冯诺依曼和摩根斯坦之后，许多决策理论家试图将期望效用理论发展为一个描述性决策模型。由于违反相消性原则、可传递性原则、恒定性原则和占优性原则情况的大量存在，因而许多以前是效用理论忠实支持者的理论家们开始转向其他的决策模型。&lt;/p&gt;
+&lt;h3&gt;描述性决策模型&lt;/h3&gt;
+&lt;p&gt;期望效用理论通常都会假设，决策者对过程中每一备选方案的结果及其概率拥有完全信息，而且决策者能够理解这些信息，能够间接或直接地推算出每一备选方案的结果及其概率拥有完全信息，而且决策者能够理解这些信息，能够间接或直接地推算出每一备选方案的有利和不利方面。最后，这一理论还假定决策者会在这些推算结果中做出比较，并选择能够实现效用最大化的方案。&lt;/p&gt;
+&lt;p&gt;满意
+赫伯特*西蒙认为，人们在做决策时，追求的是“满意”并非最优。满意是指，选择一个最能够满足你需要的方案，即使这一选择并不是理想化或最优化的。&lt;/p&gt;
+&lt;p&gt;前景理论
+前景理论认为偏好取决于问题的框架。如果相对于某一参考点，某项结果看起来是一种收益，那么其价值函数将是凹函数，决策者也倾向于规避风险。相反，如果相对于某一参考点，某项结果看起来是一种损失，那么其价值函数将是凸函数，决策者也变得更加偏好风险。&lt;/p&gt;
+&lt;p&gt;确定效应
+期望效用理论与前景理论的另一个差别在于，前景理论隐含了“确定效应”。&lt;/p&gt;
+&lt;p&gt;虚假确定效应&lt;/p&gt;
+&lt;p&gt;后悔理论
+在某些特定的情况下，人们却是将某一决策质量的衡量建立在与其他不同决策的后果相比较的基础上的。由于这种假想性结果的比较依赖于假设的事件，它有时也被称为“反事实推理”。&lt;/p&gt;
+&lt;p&gt;多属性选择
+当需要在这些不同标准（比如成本和质量）中选择时，通常并没有一个客观的最优化决策。因而人们只需要与他们的目标和价值观保持一致，而不是追求客观最优化。补偿策略，以某一标准的高价值来弥补另一标准的低价值。&lt;/p&gt;
+&lt;p&gt;非补偿性策略
+四个著名的非补偿性策略：关联原则、析取原则、词典式策略和逐步淘汰制。&lt;/p&gt;
+&lt;p&gt;1、关联原则
+决策者可以排除那些在预定范围之外的备选方案。但关联原则只能达到满意，而不是最优。&lt;/p&gt;
+&lt;p&gt;2、析取原则
+衡量每一备选方案的标准是这一方案所具有的最好的属性，而不管它的其他属性有多差。&lt;/p&gt;
+&lt;p&gt;3、词典式策略
+首先甄选出最重要的衡量标准，然后选择在这一标准上最令人满意的方案。如果选出的方案不止一个，那么就甄选出第二重要的衡量指标，再剩下的方案中进行选择。如此下去，直到最后只剩下一个方案。&lt;/p&gt;
+&lt;p&gt;优先标准
+当面临等价的备选方案时，人们并不是进行随机的选择，而是先识别出对自己来说更重要的标准，然后选择那些在这一标准上具有更高价值的方案。&lt;/p&gt;
+&lt;p&gt;决策者在判断和选择行为过程中很容易受到许多偏差的影响，但在许多情况下，这些偏差都是系统性的，而且是预先可以控制或预测的。&lt;/p&gt;
+&lt;h3&gt;直觉与偏差&lt;/h3&gt;
+&lt;p&gt;当人们面临一个复杂的判断或决策问题时，他们通常会依据自己的直觉或者是一些常识来进行决策。大多数情况下，根据此类原则得到的答案往往会非常接近“最优”方案。但是在某些情况下，直觉就可能产生某些可预测的偏差和不一致。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;代表性直觉&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;小数法则
+偶然事件并不具有自我修正的功能，出现一个高分也不一定出现相应的低分与之抵消；余下的样本只是对这个偶然事件进行稀释，时期平均数更接近总体的平均数。人们倾向于认为偶然事件具有自我修正的功能，这样的偏差也是来自代表性直觉，因为人们总是希望随机抽取的样本能够很好地代表总体。&lt;/p&gt;
+&lt;p&gt;手热效应&lt;/p&gt;
+&lt;p&gt;忽视基线值
+当基线信息与人们对因果关系的认知一致时，人们就会使用基线值。否则就会忽视基线值。&lt;/p&gt;
+&lt;p&gt;非回归性的预测
+如果只是考虑回归理论，即一个非常出色的成绩必将跟随着一个更加接近平均数的成绩。那么，糟糕的成绩得到惩罚以后也必将得到提高，而不用考虑这样的惩罚是否真正产生了作用。&lt;/p&gt;
+&lt;p&gt;想平均数回归同样也可以解释为什么非常成功的运动员或者运动队在登上了《体育画报》杂志的封面以后，其运动成绩马上就有所下降。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt; 有一些方法可以提高决策和判断的技巧，内容如下： &lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1、不要被细节的情境所迷惑&lt;/p&gt;
+&lt;p&gt;2、只要有可能，无论什么时候都应该注意基线值&lt;/p&gt;
+&lt;p&gt;3、记住偶然性并不具备自我修正的功能&lt;/p&gt;
+&lt;p&gt;4、不要错误地理解平均数回归&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;易得性直觉&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;决策者“通常会依据一些容易想起来的事例来判断一种类别出现的频次或者事件发生的概率”。通常情况下，这样的直觉能够很好地发挥作用，在所有条件都平等的前提下，普通的时间要比不寻常的事件更容易被记住或者想象出来。决策者利用易得性直觉来估计事件发生的频率和概率往往能够将困难的决策内容简化。&lt;/p&gt;
+&lt;p&gt;1、歪曲的易得性&lt;/p&gt;
+&lt;p&gt;2、想象
+越容易想象，发生的可能性越大。&lt;/p&gt;
+&lt;p&gt;3、否定
+如果想象的结果使个体产生了否定感，这样对其结果的想象并不一定能够提高个体对其结果发生可能性的预期。&lt;/p&gt;
+&lt;p&gt;4、生动性
+指某件事多么具体和易于想象。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;概率和风险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;决策者在对概率和风险进行判断的时候可以采取以下一些简单的措施来尽量避免误差：&lt;/p&gt;
+&lt;p&gt;1、保持正确的记录
+记录过去发生的某些事件的发生概率，这样就有可能减少首因效应和近因效应的发生，减少可得性偏差以及其他一些由于信息呈现方式不同而产生的偏差。&lt;/p&gt;
+&lt;p&gt;2、警惕如意算盘
+在许多情况下，人们会高估渴望时间发生的概率，同事也会低估自己不希望发生的事件的概率。打消这种如意算盘的最好方法是找一个独立的第三方来进行评估。&lt;/p&gt;
+&lt;p&gt;3、将复合事件分解为简单事件
+如果一个复合事件是由一系列简单独立事件构成的，一个有用的策略就是分别估计每一个简单独立事件发生的概率。如果简单事件的结果是相互关联的，那么这样的方法就不合适了。&lt;/p&gt;
+&lt;p&gt;锚定效应是普遍存在、不可动摇的。很多研究都指向了一个相同的目标：人们从一个锚定值进行的调整都是不充分的，无论是关于核战争爆发的可能性的判断，还是房地产价格的判断，或者是对其他数值的判断。首先要观察相关的数值中是否存在明显偏低或偏高的数值。这些锚定值很可能是决策产生偏差。由于极端的锚定值可能会产生最大的锚定效果，而锚定效应通常又是不易被察觉的，因此我们要认识到，对最佳或者最差案例的讨论可能会引起不易察觉的锚定效应。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;相关、因果关系与控制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在人们的决策中最为常见的判断就是两个变量是否存在相关关系。在许多情况下，这些判断都是基于先前已经建立的关系；在另一些情况下，先前的联系并不足以使决策者就对全新的、矛盾的信息进行权衡，从而形成一个全新的判断。&lt;/p&gt;
+&lt;p&gt;首先，决策者不应该仅仅局限于正性的、已被确认的关系。在判断相关性时，没有出现的事实往往最关键。第二、在判断一个关系是否存在之前，决策者应该问自己，他们的判断是基于自己的观察还是期望。如果是前者，相关关系就有可能被低估；而如果是后者，相关关系就有可能被高估。最后，决策者必须很好地识别相关关系和因果关系，两个存在因果关系的事件之间可能只存在很弱的相关。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;归因理论&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;三种不同的方式来解释行为的原因：&lt;/p&gt;
+&lt;p&gt;1、行为人，情境中的个体可能是行为产生的原因&lt;/p&gt;
+&lt;p&gt;2、环境，情境中的某些固有特征可能是导致行为的原因&lt;/p&gt;
+&lt;p&gt;3、时间，特定时刻的某些因素引起了行为&lt;/p&gt;
+&lt;p&gt;主要的三种信息来源：
+1、共同反应：在相同的情境中，其他人是否采取同样的行为反应&lt;/p&gt;
+&lt;p&gt;2、独特性：其他的情境或者其他的刺激是否产生相同的行为&lt;/p&gt;
+&lt;p&gt;3、一致性：同样的事情是不是每时每刻都会发生？&lt;/p&gt;</summary><category term="读书笔记"></category><category term="设计"></category><category term="产品"></category></entry><entry><title>《点石成金》读书笔记</title><link href="http://blog.kuaiwan.com/read-about-dont-make-me-think.html" rel="alternate"></link><updated>2013-01-01T15:00:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2013-01-01:read-about-dont-make-me-think.html</id><summary type="html">&lt;p&gt;和同事一起做读书会，又重新读了一遍。写了点读书笔记。&lt;/p&gt;
+&lt;h2&gt;读后感&lt;/h2&gt;
+&lt;p&gt;《点石成金》是一本网页设计的技术性书籍，因为它的英文书名“don't make me think”而出名。总而言之，只要是让用户思考的，纠结的都是要重点解决的设计问题。&lt;/p&gt;
+&lt;p&gt;这本书首先介绍了网页的主流用户的重要的使用习惯：时间紧迫、扫描、无耐心，有非常强的目的性。用户使用网站的方式也是快餐式的，能够完成工作就可以了。其中也讲了一些认知学方面的东西，比如用户一旦发现什么是可用的，就会一直用，不管好不好用。&lt;/p&gt;
+&lt;p&gt;这些主流用户的使用习惯决定了我们设计网站时要分清主次、在用语上也尽量简单，符合用户习惯。在具体设计技术方面，注意建立清楚的视觉层次、利用习惯用法、划分明确的区域、明确标识可点击的地方、最大限度降低干扰。&lt;/p&gt;
+&lt;p&gt;用户在使用网页的时候很容易迷失方向，因此导航对于用户来说就是帮助他们可靠知道他们在哪里，到哪里找东西。用户往往是尝试性的探索，最后求助于搜索，找到他们想要的东西就会离开。让用户在繁杂的体系结构中穿梭并迷路是不好的，哪怕我们很希望用户能够多停留一会儿。&lt;/p&gt;
+&lt;p&gt;作者也讲了主页设计的难点，不同部门的需求，黄金位置的争夺。有一点很重要，如果用户没有用过你的网站，你能在一瞬间让他决定是否停下来多看两眼是很大的挑战。网站logo、口号等对于相当大部分网站都是有效的。&lt;/p&gt;
+&lt;p&gt;后面关于可用性的讨论还是很有意思的，信仰大战是在实际的工作中也经常会碰到。关于测试可用性，作者讲出了很重要的一点：做得再烂的可用性测试也比不做好。看到用户如何真实的思考和使用是非常具体而又有效的，重要不是证明什么是对的，什么是错的。而是让我们更有信心，这点说的尤其好。书中也给了一些技巧，包括如何选择用户、如何记录、如何引导用户等，实用性还是很强的。&lt;/p&gt;
+&lt;p&gt;作者关于用户的好感存储器的观点非常生动，用户对网站的评价确实是会在使用的过程中不断变化；最终形成一个固有的印象。书中关于降低好感度的6种方法和提高好感度的8种方法都是可以实际拿来检查现有设计的。&lt;/p&gt;
+&lt;p&gt;总之，作为入门的网站设计书籍还是不错的。&lt;/p&gt;
+&lt;h2&gt;举例&lt;/h2&gt;
+&lt;p&gt;1、在做快玩网站导航设计时，坚持使用两级导航和顶部分类导航遇到的问题。
+现有网站都分别做不同的站点，再在内容中链接起来，这样的撕裂感很强；作为新用户是很难把握。顶部导航也碰到了是否在所有栏目中都使用两级导航的设计挑战，比如玩吧。应该说现在的设计有坚持让用户有掌控感，而不是漫无边际的感觉。&lt;/p&gt;
+&lt;p&gt;2、前段时间逛汽车频道
+首先我不会只用一个网站，大概用了4、5家网站。我最先去的是IE里面的默认首页MSN的汽车频道，MSN的汽车频道有几点做得非常棒。比如它的分板块的标示比一般的网站大并且醒目，我能够很有安全感地逛。结构清晰就是他的一大亮点，要是内容做得好一些我非常愿意用它。其他的网站看下来，有的在各种参数方面占优，有的在测评质量上面占优，有的在信息可视化上面占优，有的在车型预告和新闻上面占优，有的在论坛活跃度上面占优。可以肯定的是我会忽略这些网站大部分的信息，只挑我感兴趣的部分。&lt;/p&gt;
+&lt;h2&gt;问题&lt;/h2&gt;
+&lt;p&gt;在视觉效果和可点击效果上如何取舍，随着互联网发展有变化么？&lt;/p&gt;</summary><category term="读书笔记"></category><category term="设计"></category><category term="产品"></category></entry><entry><title>《简约至上——交互设计四策略》读书笔记</title><link href="http://blog.kuaiwan.com/read-about-simple-and-usable-web-mobile-and-interaction-design.html" rel="alternate"></link><updated>2012-11-18T23:51:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2012-11-18:read-about-simple-and-usable-web-mobile-and-interaction-design.html</id><summary type="html">&lt;p&gt;这本小书写得很棒，主题单一、内容简单；正如这本书要表达的一样，简单的东西才能受欢迎。&lt;/p&gt;
+&lt;p&gt;人们喜欢简单、值得信赖、适应性强的产品。他们简单易用，因此能够为大众所接受；它们值得信赖，因此会赢得用户；它们适应性强，因此总会发展出别具一格的应用方式。&lt;/p&gt;
+&lt;p&gt;技术产品至少有3个角度：管理人员、工程师和用户。这本书是从用户的角度看问题，讨论的问题是怎么让用户感觉用起来简单。产品的用户视角从根本上杜绝了从管理人员和工程师角度看问题的弊端。&lt;/p&gt;
+&lt;p&gt;简单并不意味着最少化。朴素的设计仍然具有自身的特征和个性。简单的特征和个性应该源自你使用的方法、所要表现的产品，以及用户执行的任务。某些貌似简单的做法已经被大众普遍接受。这些做法的特点是能够解决眼下的问题，相对便宜，而且不会引起什么争议。使用貌似简单的解决方案的人会说：“我一直都在努力。”可实际上他们并没有非常努力，也没有做得很好。&lt;/p&gt;
+&lt;p&gt;无论是设计整个web站点还是设计一个下拉菜单，都需要对什么是简单的体验有一个认识。这个认识将成为判断自己是否保持简单的一个标准。有两个方式：&lt;/p&gt;
+&lt;p&gt;1、用一句话把它写出来，包括我要设计什么、要遵循哪几条设计规则，尽量使用最简单的术语。在做一些较小的设计或者多少了解设计背景的情况下，这种方式很奏效。
+2、描述我希望用户拥有什么样的体验。就是描述用户的使用场景，以及我的设计怎么满足用户在该情景下的需求。在设计一些大型项目时，这种方式很合适，因此这种设计可以使人深入透彻地考虑到每一个细节。&lt;/p&gt;
+&lt;p&gt;每个设计都是考虑诸多限制后给出的方案。最好是在设计之初就搞清楚都存在哪些限制。然后才能保证自己的设计能够与用户的需求紧密贴合。换句话说，长期坚持理解用户生活的世界，理解他们的偏好和行为，始终都是第一位的。因此，这一部分先来解释如何理解用户。&lt;/p&gt;
+&lt;p&gt;为了能够真正的了解用户必须走出办公室，到用户实际使用的地方去。在家里、在公司、在户外，你的设计必须能够适应各种干扰。&lt;/p&gt;
+&lt;h2&gt;为谁设计&lt;/h2&gt;
+&lt;p&gt;可以把用户分为三种类型：
+1、专家型用户。愿意探索你的产品或服务，并且会给你提各种改进建议。他们希望能够看到为他们量身定做的前所未有的技术产品。他们舍得花时间研究新产品，探索产品的功能。这一类用户总体上占少数。
+2、随意型用户。他们可能使用过类似的产品或服务。他们有兴趣使用更高级更复杂的产品，但却不愿意接触全新的东西——要想让他们认可新功能，那么新功能必须足够简单。这类用户比你想象得少，而且他们的学习意愿不强烈。
+3、最的一个用户群体是主流用户。他们自己不会因为你的技术而使用你的产品，使用你的产品的目的是完成某项任务。他们会掌握一些重要功能的使用方法，但永远不会产生学会所有功能的想法。&lt;/p&gt;
+&lt;p&gt;如果你是造手机的，它们分别是这样的用户：
+1、专家型用户：想要浏览手机的文件系统，哪儿都动一动的人。
+2、随意型用户：他们可能会对更先进的手机感兴趣，但是必须保证能够轻松地导入他们宝贵的联系人。&lt;/p&gt;
+&lt;p&gt;或者，有一大群使用excel软件长达5年的用户，其中一些人可能已经知道了某些设置和选项的作用，有一些人会掌握一些高级技巧，能够通过他们为自己提供便利，而剩下的一大部分人则只会对金额一栏求和。&lt;/p&gt;
+&lt;p&gt;大多数公司都会在听取专家型用户的意见上花费太多时间——这些用户都是使用他们产品或服务时间最长的——因为跟这些用户会有很多语言。专家型用户都是技术狂热者，他们能够畅所欲言，对如何改进当前产品固执己见。然而，专家并不是典型用户，他们的判断会出现偏差。他们不会体验到主流用户遇到的问题。他们追求主流用户根本不在乎的功能。&lt;/p&gt;
+&lt;p&gt;iPod发布时，Slashdot上就有人说：“不能无线上网，内存比Nomad还少。没什么意思。” 但截止2010年1月，苹果公司已经卖出了2.4亿台iPod。&lt;/p&gt;
+&lt;p&gt;大多数“可用性”设计都将随意型用户群体作为目标。有在线预订机票经验的人被请去测试旅游网站，有使用手机拍照经验的人被请去测试拍照手机，因此我们要针对那些不是很难伺候的人展开设计。然而这类用户不够典型。这类人数量有限，相对极端，他们的技术水平较好，而且比主流用户更具有忍耐力。&lt;/p&gt;
+&lt;p&gt;如果你想设计简单的产品，记住要为主流用户而设计。&lt;/p&gt;
+&lt;h2&gt;主流用户想要什么？&lt;/h2&gt;
+&lt;p&gt;1、感兴趣的是立即把工作做完，专家则喜欢首先设定自己的偏好
+2、认为容易操控最有价值，专家则在乎操控得是不是很精确
+3、想得到靠谱的结果，专家希望看到完美的结果
+4、害怕弄坏什么，专家则有拆解一切刨根问底的冲动
+5、觉得只要合适就行了，专家则想着必须精确匹配
+6、想看到示例和故事，专家想看到的则是原理&lt;/p&gt;
+&lt;h2&gt;简单意味着控制&lt;/h2&gt;
+&lt;p&gt;从简单这个角度来看，最重要的是让用户感到自己在掌控一切。&lt;/p&gt;
+&lt;p&gt;你的设计不能跟这种掌控的感觉有任何抵触，而是应该放大这种感觉。简单的体验会让用户自信作出了正确的选择。简单的体验会让用户没有后顾之忧，因为产品的响应方式都是意料之中的。&lt;/p&gt;
+&lt;p&gt;用户需要感觉自己掌控着自己的生活——从这种需求出发，还应该更进一步：“然后呢？”。&lt;/p&gt;
+&lt;p&gt;想这样反复问自己“然后呢”，最终会发现用户的情感需求、合理需求，直至解决方案。而且，也有助于对你想要解决的设计问题有一个更深入的理解。&lt;/p&gt;
+&lt;p&gt;只有知道用户是谁以及他们的真实想法，你才可能有自己深刻的见解。&lt;/p&gt;
+&lt;p&gt;下一个问题是：“用户在做什么”。关键是不能遗漏用户体验过程中的任何一个步骤。要保证通过用户的语言来描述行动的经过，否则就有漏掉关键信息的危险。关注主要的行动，并且要从用户的视角把它描述出来。&lt;/p&gt;
+&lt;p&gt;在研究某个问题的时候，你需要把它转换成一种认识。故事是描述认识的一种好方式。与一大堆需求描述相比，故事可以让读者更容易明白什么重要和为什么重要。故事可以把大量信息浓缩到寥寥数语之中，效率极高。而且，故事很容易记住，很方便与人分享。有必要多花点儿时间把故事的每一个细节都想清楚。如果你想让自己的设计简单，每一个细节都至关重要。&lt;/p&gt;
+&lt;p&gt;故事的情节要简要。千万不要长篇大论地详细描述重大活动。要通过一个小故事展示出每一个需求点，并确定满足该需求的功能（核心功能）。你的故事必须可信，必须以真人真事为原型。好的用户故事应该简明、具体、可信，并且拥有相关细节。&lt;/p&gt;
+&lt;p&gt;认识的三个层次：
+1、可信的环境（故事中的“时间”和“地点”）
+2、可信的角色（“谁”和“为什么”）
+3、流畅的情节（“什么”和“怎么样”）&lt;/p&gt;
+&lt;p&gt;电影是从外而内构思的，开始是设置环境（没人的时候，玩具们出来玩耍），接着添加角色和动机（牛仔胡迪羡慕新来的太空人玩具巴斯光年），最后描述情节（他们俩争斗起来，之后落入玩具虐待狂的魔掌，又不得不化敌为友，联手逃脱）。&lt;/p&gt;
+&lt;p&gt;看到简单体验的用户故事，就知道什么是简单的体验：能够适应极端条件。要想简单，务必把目标设定高些再高些，不要使用常规的可用性目标。&lt;/p&gt;
+&lt;p&gt;常规的可用性目标        简单性的目标
+特殊人群可以使用        任何人都可以使用
+容易使用            毫不费力地使用
+快速响应            瞬间响应
+快速理解            一目了然
+工作可靠            始终工作
+直观的错误信息         不出错
+完整的信息           恰好够用的信息
+用户测试时工作         在混乱无序的环境下工作&lt;/p&gt;
+&lt;p&gt;运用学到的东西构思故事，然后再据以深刻理解自己要解决的问题，接着奇迹就会发生。&lt;/p&gt;
+&lt;p&gt;1、首先，回顾一下你从用户那里手机的素材、他们面对的问题、他们生活的世界。把那些对用户行为影响最大的事情放在前面。
+2、然后，从你的故事中寻找突破口。
+3、把这些设计要点按先后次序排列出来，哪一个因素影响最大？哪方面容易改变？
+4、最后，验证你的见解。如果你的见解有偏差，会导致什么结果？有哪些不可控因素会影响你的看法？有没有正反面可以例子可以参考？这些例子是否反映出你的看法有问题，或者例子本身就有问题？&lt;/p&gt;
+&lt;p&gt;太早开始设计意味着会遗漏重要的见解，甚至意味着设计思想完全错误。&lt;/p&gt;
+&lt;p&gt;“乍一看到某个问题，你会觉得很简单，其实你并没有理解其复杂性。当你把问题搞清楚之后，又会发现真的很复杂，于是你就拿出一套复杂的方案来。实际上，你的工作只做了一半，大多数人也都会到此为止。但是，真正伟大的人还会继续向前，直到找到问题的关键和深层次原因，然后拿出一个优雅的、堪称完美的有效方案。”——史蒂夫*乔布斯&lt;/p&gt;
+&lt;p&gt;“你的第一个设计看起来可能很像那么回事，但那通常只是对你想要解决的问题的初步定义。”——雅虎首席设计架构师 luke wroblewski&lt;/p&gt;
+&lt;p&gt;根据我的经验，任何项目的前3个方案大约都是对真正重要问题的描述。这段时间非常令人头疼，因为复杂性似乎与日俱增，而且脑子里也没有什么想法。坚持不懈是达成简单最重要的一步。不要匆忙着手设计。理解核心问题需要时间。&lt;/p&gt;
+&lt;p&gt;与别人分享你的认识，即使你不在场也能保证作出正确的决定。而且，你的所有干系人都能说出什么是好的决定，什么是坏的决定。让核心的理念随处可见，提醒人们时刻谨记。随时随地使用，让它成为人们时刻不忘的追求。把它公之于众，意味着团队所有成员都知道自己应该交付什么样的功能。跟参与项目的每一个人复述你的故事，看见他们一次就讲一次。不要停下来，要天天讲，反复讲。直到你讲得自己都厌烦了，人们才会真正领悟你的认识。&lt;/p&gt;
+&lt;h2&gt;简单四策略&lt;/h2&gt;
+&lt;p&gt;1、删除
+2、组织
+3、隐藏
+4、转移&lt;/p&gt;
+&lt;h3&gt;一、删除&lt;/h3&gt;
+&lt;p&gt;简化最明显的方式就是删除不必要的功能。砍掉功能有时候是一个血腥无情的过程。&lt;/p&gt;
+&lt;p&gt;1、避免错删
+交工日期临近，预算资金紧张，都可能导致功能被砍掉。设计团队经常会以提供尽可能多的功能为目标。那些耗时而又不容易实现的功能通常会被砍掉。如果有人强烈反对，得到的答复一般是他们的功能会在“第二阶段”或“第三阶段”实现。&lt;/p&gt;
+&lt;p&gt;2、关注核心
+增加价值始于改进核心体验。与新增功能相比，客户更关注基本功能的改进。&lt;/p&gt;
+&lt;p&gt;3、砍掉残缺功能
+删掉实现得不够理想的功能也是很重要的。人们都舍不得扔东西，即使它已经破烂不堪。&lt;/p&gt;
+&lt;p&gt;"坏的可以修好，次品永远存在。“——jack moffett&lt;/p&gt;
+&lt;p&gt;功能和内容会给用户造成精神上的负担，会导致一定的维护开支。所以，问题绝非”为什么应该去掉它“，而是”为什么要留着它“。以”去掉它们是一种浪费“作为理由而抓住残缺的功能不放，可能会妨碍你成功。&lt;/p&gt;
+&lt;p&gt;4、假如用户想
+要是你有幸经历过委员会主导的设计，那么肯定知道没有一项功能可以被确定为不必要的。不要猜测用户可能会或者可能不会怎么样。&lt;/p&gt;
+&lt;p&gt;“假如用户想”只会刺激人们求全的心理，担心自己漏掉了什么需求。为了寄托这份担忧，就要有人付出时间、精力和金钱增加新的功能了。这种无端的担忧，导致了设计会议上哪些强烈反对意见。&lt;/p&gt;
+&lt;p&gt;如果你发现自己（或别人）说：”假如用户要”那么只有一个答案：搞清楚这个功能对用户是否真的重要。问一问：“我的目标用户经常会遇到这个问题吗？”如果回答是“几乎没有遇到过”，那么，请放弃这个想法，继续前进。不要再“假如”了，还是去发现问题吧。&lt;/p&gt;
+&lt;p&gt;5、客户要求
+要倾听客户的意见，但决不能盲从。&lt;/p&gt;
+&lt;p&gt;客户向我们提出了很多功能要求，但他们从来不知道如果想到一个点子就直接放到产品中，很可能导致产品失败。我们的做法是对用户的要求做逆向工程——搞清楚用户到底遇到了什么问题，仔细斟酌这个问题是不是应该由我们的软件来解决。&lt;/p&gt;
+&lt;p&gt;6、方案、而不是流程
+如果一个小的变化导致了复杂的流程，就应该退一步去寻找更好的解决方案。&lt;/p&gt;
+&lt;p&gt;7、如果功能不是必要的
+长远来看，功能增加有害无益。&lt;/p&gt;
+&lt;p&gt;今天，口碑、用户评论、个人推荐以及产品试用的重要性已经远远超过了大众媒体广告。消费者在选择产品之前，都要听一听用户的意见，他们是已经对产品的可用性有了了解的人。因此，痛下决心，砍掉不必要的功能，要强过无意义地堆砌功能。&lt;/p&gt;
+&lt;p&gt;8、真有影响吗
+删除一项功能，对不同的用户影响不同。&lt;/p&gt;
+&lt;p&gt;当用户离不开这项功能时，你再把它砍掉，即使是一个很不起眼的变化，都会激怒用户。&lt;/p&gt;
+&lt;p&gt;不过，有的依赖性还是比较容易消除的。对用户来说，真正重要的是什么？是你的设计能不能解决他的大问题。如果能，那么他就会顺从你，即使你的改变会让他不舒服。&lt;/p&gt;
+&lt;p&gt;最开始应该考虑的，是哪些功能最接近用户的核心需求。想在任何时候取悦所有用户是不可能的。因此，我们只能退而求其次，专注于目标客户的核心任务，只要让他们高兴、让他们满意就行了。&lt;/p&gt;
+&lt;p&gt;9、排定功能优先级
+给那些轻易就能够满足主流用户需求的功能排定优先次序。&lt;/p&gt;
+&lt;p&gt;遵循以下原则：
+a、确定用户想要达到的目的，并排定优先次序
+b、专注于寻找能够完全满足优先级更高的用户需求的解决方案。找到之后再考虑满足用户的其他目标。
+c、确定用户在使用产品过程中最常见的干扰源，并将解决这些问题的功能按难易程度排除优先次序。
+d、要知道能够满足主流用户的“足够好”的遥控器与只有专家才看得上眼的“精准的”遥控器有什么区别。&lt;/p&gt;
+&lt;p&gt;10、负担
+人在处理信息、学习规程和记忆细节方面的能力是有限的。&lt;/p&gt;
+&lt;p&gt;界面中的各种小细节会增加用户的负担，会像公路上的减速带或坑坑洼洼一样降低用户的效率。&lt;/p&gt;
+&lt;p&gt;a、删除没人会看的文字，比如名称下的口号
+b、简化布局，删除页面右侧的垂直边栏
+c、去掉重复的链接
+d、精简按钮和链接的样式
+e、减少广告位和广告数量，让目标明确的客户不致被这些内容干扰分心
+f、去掉分散注意力的元素&lt;/p&gt;
+&lt;p&gt;去掉那些可有可无的选项、内容和分散人们注意力的玩意儿，可以减轻用户的负担，让用户专心去做自己想做的事。去掉分散注意力的视觉元素，可以让用户感觉速度更快，而且更加有安全感。可以说，细节决定成败。&lt;/p&gt;
+&lt;p&gt;11、决策
+选择有限，用户反而更喜欢。&lt;/p&gt;
+&lt;p&gt;我们通常会为用户提供尽可能多的选择。但选择过多很容易让用户无所适从。为用户提供少量选择的情况下，用户购买的可能性要大于为他们提供大量选择的情况。而且，他们还发现在选择少的情况下，用户购买之后的满意度要高于选择多的情况。&lt;/p&gt;
+&lt;p&gt;给用户提供选择会让人感觉自己在把控着局面，而在某些情况下人们更愿意少一些选择。如果选择超过了一定的界限，特别是在很多选择都相似的情况下，选择反而变成了负担。&lt;/p&gt;
+&lt;p&gt;12、分心
+用户界面，尤其是网页上面，到处是让人分心的东西。这些讨厌的细节会让哪怕阅读文章这么简单的事都变成一场噩梦。&lt;/p&gt;
+&lt;p&gt;研究人员Erping zhu发现，增加文档中的超链接会降低读者的理解力——即使读者不会打开链接也一样。&lt;/p&gt;
+&lt;p&gt;网页的右边栏经常会出现更多分散注意力的链接。这些链接花里胡哨，很容易把用户的注意力从页面的焦点区引开。&lt;/p&gt;
+&lt;p&gt;如果想设计简单的用户体验，就该牢记删除那些干扰因素，让用户注意力保持集中。&lt;/p&gt;
+&lt;p&gt;13、聪明的默认值
+选择聪明的默认值可以减少用户的选择。&lt;/p&gt;
+&lt;p&gt;通过分析客户信息，可以找到很多选择默认值的依据：
+a、热门文档（“头条新闻”）
+b、类似项（“浏览过这个产品的用户还看过”）
+c、个性化信息（“使用你的地址自动填写表单”）
+d、共同的选择（把大家最常用的选择放到前面）&lt;/p&gt;
+&lt;p&gt;还应该记住一点，当一个用户再次光顾网站或应用，他通常愿意以前次离开的状态作为起点。&lt;/p&gt;
+&lt;p&gt;默认值是节省用户时间和精力的有效方式，也是清除设计蓝图中“减速带“的首选方式。&lt;/p&gt;
+&lt;p&gt;14、选项和首选项
+主流用户不喜欢为设置选项和首选项费心劳神。&lt;/p&gt;
+&lt;p&gt;在找想要删除的东西么？就从选项和首选项开始吧。&lt;/p&gt;
+&lt;p&gt;简单的用户体验不会强迫用户去做这种选择，哪种方式最有效应该是设计团队考虑的问题。解决这个问题的最佳途径就是请一些用户来测试。如果测试结果相差不大，都没有明显的缺陷，就意味着没有”错误“的设计。赶紧选择一种方式实现，然后继续。&lt;/p&gt;
+&lt;p&gt;15、如果一个选项还嫌多
+有时候，即使一个选项都嫌多。&lt;/p&gt;
+&lt;p&gt;我们要求参与者找出并登记一个节假日。找出节假日很简单，他们很快就作出了决定。但是，在登记按钮的旁边还有一个“查看详细说明”链接。这个链接具有很大的诱惑力。每当一位参与者马上要去登记时，都会先点开那个链接。结果没有一个人登记成功的。&lt;/p&gt;
+&lt;p&gt;我们原以为那个链接对不是很确定的人会有帮助的。但效果却恰恰相反，这个链接动摇了每一个接近完成的人对我们的信心。&lt;/p&gt;
+&lt;p&gt;在向用户提供选择时，务必要考虑周全一些，想清楚用户会不会因为这些选项而不知所措，或者这些选项会不会动摇他们的决心。&lt;/p&gt;
+&lt;p&gt;如果你想要设计主流用户喜爱的简单体验，就问问自己，向用户提供这些选项会不会因为追求完美而牺牲速度和简单。如果是，删除那些选项。&lt;/p&gt;
+&lt;p&gt;16、错误
+即使非常小的错误也会让用户烦恼。消除错误是简化用户体验的一个方面。&lt;/p&gt;
+&lt;p&gt;在设计简单的体验时，关键的一步是确定哪些地方需要错误消息，或者检查错误日志，从中找出常见的错误消息。&lt;/p&gt;
+&lt;p&gt;17、视觉混乱
+删除视觉混乱的元素意味着人们必须处理的信息变少了，能够把注意力集中到真正重要的内容上。我注意到，用户所说的“干净”的界面，意思就是其中没有杂乱的元素。&lt;/p&gt;
+&lt;p&gt;以下是一些减少视觉混乱的方法：
+a、使用空白或轻微的背景色来划分页面，而不要使用线条。
+b、尽可能少使用强调。如果仅加粗就行了，就不必又加粗、又放大、又变成红色。
+c、别使用粗黑线，匀称、浅色的线更好
+d、控制信息的层次。如果页面中信息的层次超过了两或三个层次，就会导致用户迷惑。比如说，要少用数字、大字体或粗字体
+e、减少元素大小的变化。
+f、减少元素形状上的变化。整个界面中最好只使用一种按钮样式，使用三或四种按钮样式就太花哨了&lt;/p&gt;
+&lt;p&gt;18、删减文字
+减少不必要的说明。&lt;/p&gt;
+&lt;p&gt;多余的文字通常是浪费。用户不会傻了吧唧、一字不落地看完。他们用眼睛扫视整个页面，只捡其中有意思的词或者句子看两眼就不错了。&lt;/p&gt;
+&lt;p&gt;删除文字有以下三大好处：
+a、重要的内容“水落石出”
+b、消除了分析满屏内容的麻烦
+c、读者会对自己看到了什么更有自信&lt;/p&gt;
+&lt;p&gt;下面是多余文字的几个藏身之所：
+a、删除引见性文字
+b、删除不必要的说明
+c、删除繁琐的解释&lt;/p&gt;
+&lt;p&gt;19、精简句子
+几乎任何句子都能精简，几乎任何文字都可以删除。&lt;/p&gt;
+&lt;p&gt;richard lanham的几个简化的简单办法
+a、不使用介词（“对于/根据/为了...这些词会弱化句子的谓语
+b、不使用正进行的动词形式
+c、把被动句式转换为主动句式
+d、删掉所然无味的开头，开门见山
+e、减少废话。比如：用“每天”代替“在每天的基础上”&lt;/p&gt;
+&lt;p&gt;20、删减过多
+人们希望自己能够掌控局面。足够多的控制可以让他们消除因基本需求得不到满足而引发的焦虑，但要避免控制太多导致他们因选择而浪费时间。&lt;/p&gt;
+&lt;p&gt;21、你能做到
+简单的设计通常出自一位眼光独到的设计师、一位“无情的”或“毫不妥协的”创新者之手。但是，我们大多数人所在的组织中，妥协和让步已经成为常态。在共同远景的基础上，在关注主流用户的前提下，通过彻底重新设计是可以达到简约之效的。&lt;/p&gt;
+&lt;p&gt;22、焦点
+“删除”策略的核心就是干掉那些分散注意力的因素，聚焦于项目。删除混乱的要素可以让用户聚焦于真正重要的功能。&lt;/p&gt;
+&lt;p&gt;a、聚焦于对用户有价值的功能。这意味着专注于那些承载用户核心体验的功能，也意味着交付的功能必须能够消除用户的挫折感，能够消除他们的焦虑。
+b、聚焦于可用资源，通过删除残缺的功能、不切题的元素和花里胡哨的东西为用户提供价值
+c、聚焦于达成用户的目标。纠结于流程会陷入细节的泥潭而无法自拔
+d、删除那些干扰性的、增加用户负担的“减速带”：错误消息、不知所云的文字、不必要的选项和造成视觉混乱的元素&lt;/p&gt;
+&lt;p&gt;有了耐心，再加上数据支持，你就可以为自己的大多数项目找到焦点。如果面临的是人的问题，那么可以通过阶段性地步步为营或者通过测试获得的证据来解决。&lt;/p&gt;
+&lt;p&gt;两个例外：
+a、不可避免的法律要件
+b、不能脱离环境删除某些功能。&lt;/p&gt;
+&lt;h3&gt;二、组织&lt;/h3&gt;
+&lt;p&gt;组织是简化设计的另一个重要策略。组织往往是简化设计的最快捷方式。组织成一小块一小块。&lt;/p&gt;
+&lt;p&gt;如果你想通过组织的方式来简化设计，要记住最重要的一点是只强调一两格重要主题。随随便便地组织不会让用户的注意力集中，只能让他们眼花缭乱。&lt;/p&gt;
+&lt;p&gt;1、分块
+有关分块的经典建议是把项组织到“7加减1”个块中。理论上讲，这个数字是人的大脑瞬间能够记住的最大数目。不少心理学家认为人类的瞬间存储空间其实更小——大约只有4项。不过，“7加减1”规则还是有效的，至少看起来人类还能应付得了这个数字。&lt;/p&gt;
+&lt;p&gt;2、围绕行为进行组织
+用户会提出的第一格问题是：“我可以用它来做什么呢？”因此，着手组织之前首先要理解用户的行为：他们想做什么，先做什么后做什么。&lt;/p&gt;
+&lt;p&gt;人们一般都希望按照某种特定的步骤做事。打乱这个步骤就会造成迷惑，令人沮丧。此时最大的障碍是注册流程和有效性检查。如果不能去掉这个步骤，至少要想办法推迟；如果不能推迟，就要尽量简化。要悉心了解用户心中的操作步骤，然后尽全力让流程与各个步骤的顺序吻合。&lt;/p&gt;
+&lt;p&gt;3、是非分明
+好的分类是非分明。在对一组性质相同的产品（如网上书店的书）进行分类时，确定清晰的分类标准对于用户非常重要。&lt;/p&gt;
+&lt;p&gt;简单的组织模式具有清晰的界限——是非分明。这样，用户才能明确知道到哪里去找自己想要的东西。因此，要多找一些用户，询问他们的分类标准。如果众口不一，或者根本就难以回答，你就有麻烦了。&lt;/p&gt;
+&lt;p&gt;有时候，你会遇到同属于两个类别的东西。太多的重叠会导致困惑，但有时候确实无法避免。西红柿是一种水果，但你会在超市里的蔬菜区找到它们。所谓最简单的分类，通常指的是重复交叉最少的分类方法。&lt;/p&gt;
+&lt;p&gt;4、字母表和格式
+字母表经常会把事情搞乱。按照字母表顺序排列，其实会把顺序搞乱。按照字母表顺序排列看起来简单，却经常不可行。如果不知道要想找的东西叫什么，就完蛋了。&lt;/p&gt;
+&lt;p&gt;按照格式（文字、图片、视频）来对内容进行排序，是另一种看起来简单实则费力不讨好的分类方法。&lt;/p&gt;
+&lt;p&gt;5、搜索
+无论是设计还是使用，搜索都比浏览困难得多。关于搜索哦，有两个似是而非的观点：&lt;/p&gt;
+&lt;p&gt;a、有的用户认为搜索比浏览更容易——有一小群人酷爱搜索。这个话听起来没错的。然而，jared spool对30名用户120多次的购物测试表明，没有一个人始终会把搜索作为第一选择。
+b、另一个论调是设计搜索功能要比组织内容链接更容易。我的经验是设计简单的搜索界面其实要困难得多。你必须考虑搜索关键词中的拼写错误和同义词，而且，还要对搜索结果有效地分类组织。&lt;/p&gt;
+&lt;p&gt;如果要设计简单的体验，那么最好嫌对内容有效地组织，然后再考虑如何设计搜索。&lt;/p&gt;
+&lt;p&gt;6、时间和空间
+按照时间来组织活动是一种简单又通用的方式。对于那些持续时间相差不大的活动，按照时间排序是最合适的。这样，用户就不必时不时地查找日历和时间表了。&lt;/p&gt;
+&lt;p&gt;7、网格
+布局是否清晰明了，对于设计能否让用户感觉简单实在是太重要了。&lt;/p&gt;
+&lt;p&gt;利用不可见的网格来对齐界面元素，是吸引用户注意力的一种有效方式。用户虽然看不见有网格，但视觉加上想象会告诉他们“接着请看这里”，根本用不着明亮的颜色或者动态图片。网格越简单，效果越明显。&lt;/p&gt;
+&lt;p&gt;哪怕少数几个元素没有放到位，都会破坏这种网格布局的引导效果。&lt;/p&gt;
+&lt;p&gt;网格布局也会让人感觉局促和受压制。要解决这个问题，可以设计一个不对称的布局。例如：包含技术列，或者，可以将少量元素设计成跨在两列甚至三列上。&lt;/p&gt;
+&lt;p&gt;8、大小和位置
+重要的东西元素要大一些，即便比例失调也可以考虑。不太重要的界面元素应该小一些。要想办法表现出不同的重要性。否则用户就会被搞迷糊。记住这条规则：如果一个元素的重要性为1/2，那就把它的大小做成1/4。&lt;/p&gt;
+&lt;p&gt;把相似的元素放到一起。这一条听起来理所当然，但效果却极为明显。把类似的界面元素放在一起，能够有效减少视觉上的干扰因素（如色标、标签或边框），也不必解释他们之间的关系。这样也可以让用户更容易集中注意力，因为他们不必再在屏幕上东张西望了。&lt;/p&gt;
+&lt;p&gt;9、分层
+防止这些信息混乱不清的一种方式，就是使用一种名叫感知分层的技术。利用感知分层技术，我们可以把一些元素放在另一些元素上方，或者把两组元素并排起来。例如：可以用连续的色带关联相关的内容。甚至，还可一让散落在用户界面各个地方的元素之间建立联系，比如为购买按钮和购物车图标应用相同的颜色。在使用感知分层的情况下，不一定要把界面严格分割成几个区域。&lt;/p&gt;
+&lt;p&gt;感知分层借助于颜色很容易实现。除了颜色之外，使用灰色阴影。大小缩放，甚至形状变化，都可一实现感知分层。&lt;/p&gt;
+&lt;p&gt;以下是几点提示：
+a、尽可能使用较少的层。内容越复杂，所需的分层反而能少些。
+b、考虑把某些基本元素放到常规背景层，因为一个元素很难放到两层里。
+c、尽量让任意两层之间的差别最大化。20%的灰度和30%的灰度很难让人分清。类似地，在选择颜色时不能忘记色弱的用户。
+d、对于相对重要的类别，使用明亮、高饱和度的颜色，可以让他们在页面上更为突出。
+e、对于同等重要的类别，利用感知分层技术，使用相同的亮度和大小，只是色调要有所区别&lt;/p&gt;
+&lt;p&gt;要想知道设计是否成功，可以眯起眼睛来观察屏幕，看是否能区分出不同的层。&lt;/p&gt;
+&lt;p&gt;10、色标
+使用颜色分层与使用颜色标记信息仍然有细微的差别。&lt;/p&gt;
+&lt;p&gt;分层信息中的颜色利用了人们的记忆原理，因此给人造成的负担很轻。而使用颜色来标记信息的代价却很明显：与任何标记系统一样，需要人们花时间来学习和理解这些标记，因此需要用户花费更多的心思。&lt;/p&gt;
+&lt;p&gt;使用的颜色越多，学习的时间就越长。如果整个设计中使用的颜色还不完全一致，用户就会分不清什么颜色表示什么含义。&lt;/p&gt;
+&lt;p&gt;在不必要的情况下添加颜色会导致困惑。&lt;/p&gt;
+&lt;p&gt;在确保人们会花很长时间学习，而且他们会重复使用你的设计时，色标系统非常合适。当然，使用人们已经知道其含义的色标也没有问题。&lt;/p&gt;
+&lt;p&gt;11、期望路径
+人们并不总是走你为他们铺好的路。&lt;/p&gt;
+&lt;p&gt;如果你在描述用户使用软件的路径，千万不要被自己规划图中清晰的线条和整洁的布局所迷惑。&lt;/p&gt;
+&lt;p&gt;不断重复使用软件的流程，看看哪个地方总是抓住你的眼球。（用眼光瞟你的屏幕布局！）仔细观察做同样事情的其他人。&lt;/p&gt;
+&lt;p&gt;简单的组织，意味着你在使用软件时会对什么感觉不错，而不是你在规划中看到了什么逻辑。&lt;/p&gt;
+&lt;h3&gt;三、隐藏&lt;/h3&gt;
+&lt;p&gt;隐藏部分功能是一种低成本的方案。但是，到底该隐藏哪些功能呢？&lt;/p&gt;
+&lt;p&gt;隐藏比组织具有一个明显的优势：用户不会因不常用的功能分散注意力。&lt;/p&gt;
+&lt;p&gt;对某些人来说，隐藏可能还是删除不必要功能的开始：把它隐藏起来，让它在黑暗中默默死去，然后删除它。我对这种做法持怀疑态度。要想拿掉任何功能，我都建议重温一下”删除“中的观点，无论你是否已经把它们隐藏起来了。欲删从速是更好的思路。&lt;/p&gt;
+&lt;p&gt;无论隐藏什么功能，都意味着你在用户和功能之间设置了一道障碍。为了不给用户造成不必要的麻烦，必须仔细权衡要隐藏哪些功能。&lt;/p&gt;
+&lt;p&gt;1、不常用但不能少
+个性化设置不会经常改变，因此非常适合隐藏。&lt;/p&gt;
+&lt;p&gt;那些主流用户很少使用，但自身需要更新的功能，通常是适合隐藏的功能。&lt;/p&gt;
+&lt;p&gt;a、事关细节
+b、选项和偏好
+c、特定于地区的信息&lt;/p&gt;
+&lt;p&gt;2、自定义
+我不太赞成让用户根据自己的需求来自定义界面。对我而言，这样做会显得设计人员懒惰，没有主见。&lt;/p&gt;
+&lt;p&gt;主流用户确实想自定义自己的设置。但是，他们更感兴趣的是展示自己的个性。&lt;/p&gt;
+&lt;p&gt;如果用于自定义的工具很简单，如果用户只需添加几项可完成自定义，如果不需要重排N项那么多，自定义还是很有价值的。&lt;/p&gt;
+&lt;p&gt;3、自动定制
+自动定制不会让界面变得更简单，反而会把界面搞得很复杂，给用户带来极大的不便。主要原因有三个：
+a、很难保证准确性。每个人常用什么功能差别很大。对某些人正确的，对另一个人可能就是错误的。
+b、缩短菜单后，用户需要把每个功能看两遍才能确定
+c、用户最终不知道去哪里找自己想用的命令，因为这些命令的位置有可能会变&lt;/p&gt;
+&lt;p&gt;除非你使用的算法非常完美（但完美是不存在的），否则通过把自己的界面变得复杂和不好理解而损害用户的自信，可以说是大错特错了。&lt;/p&gt;
+&lt;p&gt;4、渐进展示
+通常，一项功能会包含少数核心的供主流用户使用的控制部件，另有一些为专家级用户准备的扩展性的精确的控制部件。隐藏这些精确的控制部件是保持设计简单的不错选择。&lt;/p&gt;
+&lt;p&gt;”核心功能加扩展功能”的模式，不仅能够简化设计，更是一种强大的交互手段。对于用户期望的功能，要在正确的环境下给出明确的提示。&lt;/p&gt;
+&lt;p&gt;5、阶段展示
+除了在软件中的某个部分隐藏起来，还可以随着用户逐步深入界面而展示相应的功能。&lt;/p&gt;
+&lt;p&gt;表单通常都需要使用阶段展示，但要遵循几条规则。&lt;/p&gt;
+&lt;p&gt;a、设定一种场景
+b、讲一个故事
+c、说用户的语言。对于业内人士，行业术语简洁明确。但对外行来说，一个看不懂的词，要比一段能看懂的话还复杂。
+d、把信息分成小块展示。如果这个块太大，用户会认为表单很复杂。每个块必须完整而又自成一体。&lt;/p&gt;
+&lt;p&gt;在流程中的每一步都符合用户心理预期的情况下，阶段展示的效果最好。&lt;/p&gt;
+&lt;p&gt;6、适时出现
+隐藏功能，该功能会在你需要时出现在合适的位置上。&lt;/p&gt;
+&lt;p&gt;过分强调该隐藏的功能会导致混乱。只要他们试图炫耀这个功能，就会把自己拖入混乱、难看、成本高昂的泥沼。&lt;/p&gt;
+&lt;p&gt;7、提示和线索
+为隐藏的功能选择一个标签似乎并不是件容易的事。细微的线索，足以提示出隐藏的功能。&lt;/p&gt;
+&lt;p&gt;我们经常可以看到为隐藏功能打上的标签，如含糊其辞的“更多”，或者高高在上的字眼“高级”。&lt;/p&gt;
+&lt;p&gt;如果你看一看某些计算机制造商的网站，就会发现里面充斥着各种技术概念。&lt;/p&gt;
+&lt;p&gt;应邀探索设计模式，而非一个试图介绍更多功能的标签。这种方法的针对性特别好：调出高级工具的上下文，能够让用户清楚地知道高级工具与基本工具能够完成类似的任务。&lt;/p&gt;
+&lt;p&gt;隐藏处理得好的界面会给人一种优雅的感觉：界面中包含的线索尽管细微，却能掐到好处地提示出隐藏功能的位置和功用。&lt;/p&gt;
+&lt;p&gt;8、让功能容易找到
+把标签放到哪里比把标签做多大要重要得多。保证用户在前进的过程中能够遇到提示。但，不要挡住他们的去路。&lt;/p&gt;
+&lt;p&gt;Jef Raskin所说的“用户关注点”——用户关注的屏幕区域，正是导致上述差别的关键。&lt;/p&gt;
+&lt;p&gt;用户在一开始端详屏幕或者新建一个任务时，他的关注点很宽泛。根据眼球追踪研究的结果，当用户打开一个新站点时，他会扫视整个屏幕，而当用户专注于一项任务时，他的关注点就会聚焦。&lt;/p&gt;
+&lt;p&gt;9、隐藏的要求
+只要不让人找太久，隐藏就是有效的。&lt;/p&gt;
+&lt;p&gt;使用隐藏策略必须做到以下几点：
+a、隐藏一次性设计和选项
+b、隐藏精确控制选项，但专家用户必须能够让这些选项始终保持可见
+c、不可强迫或寄希望于主流用户使用自定义功能，不过可以给专家用户提供这个选项
+d、巧妙地隐藏。换句话说，首先是彻底隐藏，其实是适时出现&lt;/p&gt;
+&lt;p&gt;删除不必要的、组织要提供的、隐藏非核心的。&lt;/p&gt;
+&lt;h3&gt;四、转移&lt;/h3&gt;
+&lt;p&gt;设计简单体验的一个秘密，就是把正确的功能放到正确的平台或者正确的系统组件中去。&lt;/p&gt;
+&lt;p&gt;1、在设备间转移
+有些功能在有些平台上简单，而在其他的平台上就会变得复杂。&lt;/p&gt;
+&lt;p&gt;2、移动平台与桌面平台
+今天的移动设备非常合适记录用户的所见所闻和移动路线，但通过它输入大量文字则不方便。&lt;/p&gt;
+&lt;p&gt;3、向用户转移
+简单的界面把复杂的工作留给了用户。&lt;/p&gt;
+&lt;p&gt;4、用户最擅长做什么
+用户指挥，计算机操作，就会给人简单的感觉。&lt;/p&gt;
+&lt;p&gt;让用户感觉简单的一个重要前提，就是先搞清楚把什么工作交给计算机，把什么工作留给用户。&lt;/p&gt;
+&lt;p&gt;5、创造开放式体验
+在软件设计中，让某些功能具有多种用途也是一种简化之道。至于用这项功能来做什么，就留给用户决定好了。&lt;/p&gt;
+&lt;p&gt;6、菜刀于钢琴
+简单界面的最高境界，应该是专家和主流用户都会感觉它非常好用。&lt;/p&gt;
+&lt;p&gt;这些体验之所以让人觉得简单，就是因为专家和主流用户可以分别设置自己的目标。&lt;/p&gt;
+&lt;p&gt;开放性界面的秘诀在于，尽量减少仅适合中级用户的“便捷”特征。&lt;/p&gt;
+&lt;p&gt;7、非结构化数据
+让计算机负责完成数据的结构化工作，用户体验就会简单多了。&lt;/p&gt;
+&lt;p&gt;8、信任
+要想有效地实现功能转移，必须找到一种确定的感觉。简单的体验需要信任。计算机之所以搞得用户不舒服，就是因为他们总是控制和指挥用户。&lt;/p&gt;
+&lt;p&gt;如果想把任务转移到用户一方，你必须相信用户有能力完成任务。&lt;/p&gt;
+&lt;p&gt;我们经常把用户看成孩子。但在保护用户不受错误干扰，或者说应该让他们自己找出解决方案的时候，我们习惯于剥夺他们自己的决定权。这也就难怪用户会反对或者憎恨计算机了。&lt;/p&gt;
+&lt;p&gt;构筑信任关系的唯一方式，就是让用户参与测试选型或实物模型。在能够正确地把握如何分配任务之后，让用户专注于选择和指挥，让计算机专注于存储和计算。&lt;/p&gt;
+&lt;h3&gt;五、最后的叮嘱&lt;/h3&gt;
+&lt;p&gt;1、顽固的复杂性
+“任何应用程序都会有一些无法消除的复杂性。关键的问题在于：谁会面对这些复杂性？”——Larry Tesler&lt;/p&gt;
+&lt;p&gt;创造简单用户体验的秘诀就在于把复杂性转移到正确的地方，让用户每时每刻都能感受到简单之美。&lt;/p&gt;
+&lt;p&gt;2、细节
+缺少细节的后果可能是灾难性的，也会让用户心中的怒火越烧越旺。花上半天时间重新设计一个解决方案，解决看似微不足道的小问题，也许就能把成千上万次愤怒的用户投诉消弥于无形。&lt;/p&gt;
+&lt;p&gt;3、简单发生在用户的头脑中
+给用户留下足够的想象空间。&lt;/p&gt;
+&lt;p&gt;简单的体验应该为用户留出足够的空间，让他们能够想象到当前正在做的事情同样也是自己的一部分。&lt;/p&gt;
+&lt;p&gt;My god, It's done。&lt;/p&gt;
+&lt;p&gt;这本书看起来很小，轮廓也很简单，但书中有很多实用的建议，只能摘抄一遍，希望能够更深刻。&lt;/p&gt;</summary><category term="读书笔记"></category><category term="设计"></category><category term="产品"></category></entry><entry><title>《合作的进化》读书笔记</title><link href="http://blog.kuaiwan.com/read-about-the-evolution-of-cooperation.html" rel="alternate"></link><updated>2012-11-18T23:51:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2012-11-18:read-about-the-evolution-of-cooperation.html</id><summary type="html">&lt;p&gt;本书写于1984年。这本书和《失败的逻辑》类似是用计算机科学为工具来研究社会学问题。这里研究的是重复囚徒困境下的最优策略问题。&lt;/p&gt;
+&lt;p&gt;在每一个人都有自私动机的情况下，怎样才能产生合作呢？&lt;/p&gt;
+&lt;p&gt;个体对自身利益的追求将损害整体的利益时，这个根本的问题就出现了。这就是“囚徒困境”问题。&lt;/p&gt;
+&lt;p&gt;“囚徒困境”是对一些非常普遍而有趣的情形的简单抽象。在这些情形中，从个人的角度考虑，背叛是最好的选择，但双方背叛会导致不甚理想的结果。“囚徒困境”要求四个可能的结果之间保持一定的关系。&lt;/p&gt;
+&lt;p&gt;1、第一个关系是四个结果的排序，对策者能够得到的最好的结果是T，即对方合作你背叛时所得到的“诱惑”。最差的是得到S，即当对方背叛时你合作。另外两个结果可以假设R比P好，即得到对合作的“奖励”比得到对背叛的“惩罚”要好。这样得到从最好到最差四个结果的排序是：T、R、P和S。&lt;/p&gt;
+&lt;p&gt;2、第二个关系是，对策者不能通过轮流背叛对方来摆脱“困境”。这个假设意味着，交替地背叛对方和被对方背叛的收益没有双方合作好。即假定“对双方合作的奖励”大于“对背叛的诱惑”和“给笨蛋的报酬”的平均值（即R&amp;gt;(T+S)/2）&lt;/p&gt;
+&lt;p&gt;合作可能出现是因为对策者将再次相遇。这种可能性意味着今天作出的选择不仅决定当前对局的结果，而且还影响对策者以后的选择。因此未来会在当前投下它的影子并影响当前的对策局势。&lt;/p&gt;
+&lt;p&gt;有两个原因使得现在比未来更为重要。首先，对策者倾向于认为未来所得的价值随着时间的推移而减少。其次，对策者总会有些机会不再相遇。由于这些原因，下一步对局的收益总是被看作比当前一步的收益少。w表示折扣系数。&lt;/p&gt;
+&lt;p&gt;“囚徒困境”的框架里包含了哪些现实的特征。
+1、对策者的收益不必是可比较的。 
+2、这些收益不必是对称的。四种收益是按“囚徒困境”的定义要求排序的。
+3、对策者的收益值只是相对的，不是绝对的。
+4、决定是否合作不必顾及他人的看法。
+5、不必假设对策者是理性的。不必假设他们总是企图争取最大利益。
+6、对策者的行为不必都是有意识的选择。不必假设所有的选择都是深思熟虑的。&lt;/p&gt;
+&lt;p&gt;把合作问题抽象为“囚徒困境”要忽略许多实际问题本身的重要特点。例如：这种完全的抽象没有考虑语言交流的可能，第三者的直接影响、一个选择的实现问题以及对方上一次选择的不确定性。任何一个聪明人都肯定不会在作出重要选择时忽略这些复杂的因素。然而，不考虑这些复杂因素而作出的分析能够帮助我们弄清人们互相作用的一些微妙特征。正是现实的复杂性使得抽象的分析变得更有价值。&lt;/p&gt;
+&lt;p&gt;合作的进化要求个体有足够大的机会再次相遇，使得他们能形成在未来打交道的利害关系，如果这样的话，合作的进化可以分三个阶段。&lt;/p&gt;
+&lt;p&gt;1、起始阶段：合作可以在一个无条件背叛的世界里产生。零散个体之间没有机会交往，合作也就不会产生。然而，以相互回报合作为宗旨的小群体之间，一旦有交往的可能，合作便会出现。
+2、中间阶段：基于回报的策略能够在许多不同类型的策略组成的环境里成长起来。
+3、最后阶段：基于回报的合作一旦建立起来，就能防止其他不太合作的策略的侵入。因此，社会进化的齿轮是不可逆转的。&lt;/p&gt;
+&lt;p&gt;当合作的条件出现时，合作可以在原来毫无希望的情况下出现且保持稳定。特别是这个“自己活也让别人活”的系统说明了朋友关系不是合作产生的必要条件。在适当的条件下，基于回报的合作甚至可以在对抗双方产生。&lt;/p&gt;
+&lt;p&gt;多么令人鼓舞的结论啊，难怪双赢在现代社会中越来越重要；只懂得对抗不懂得合作的人会被淘汰。&lt;/p&gt;
+&lt;p&gt;虽然预见对于合作的进化不是必要的，但它的确很有帮助。可以向个体选择提供四个方面的建议：
+1、不要嫉妒对方的成功；
+2、不要首先背叛；
+3、要对合作和背叛都作出回报；
+4、不要耍小聪明。&lt;/p&gt;
+&lt;p&gt;合作更容易从自私者中间产生。一个具有远大眼光的改革者想要通过改变相互作用的条件来促进合作。为此，我们考虑了各种各样的方法，如使对策者之间的相互作用更持久、更经常；教育参与者更多地相互关心；教会他们理解回报的价值。&lt;/p&gt;
+&lt;p&gt;不同的社会结构如何影响合作发展的方式。例如，人们的相互联系经常受到某些可以观察到的特征如性别、年龄、肤色和穿着风格的影响。这些特征导致了以偏见和地位层次为基础的社会结构。&lt;/p&gt;
+&lt;p&gt;具有预见能力的参与者了解合作理论的真谛后，可以加快合作的进化。&lt;/p&gt;
+&lt;p&gt;以下是研究得出的结果：&lt;/p&gt;
+&lt;p&gt;命题1：如果折扣系数w足够大，则不存在独立于对方所采用的策略的最优策略。
+命题2：当且仅当w足够大时，“一报还一报”是集体稳定的。且w的临界值是四个收益参数T、R、P和S的函数。
+一报还一报集体稳定的临界值是(T-R)/(T-P)和(T-R)/(R-S)中较大的一个。
+命题3：只有当w足够大时，任何可能首先合作的策略才可能是集体稳定的。
+命题4：对于善良的策略，如果是集体稳定的，它就必须能被对方的第一个背叛所激怒。
+命题5：“总是背叛”策略总是集体稳定的。没有任何单一的个体可以指望比继续背叛和不合做做得更好。一个“小人”的世界可以阻止任何使用其他策略的个体的侵入，只要这个新来者每次都是单个的话。然而，如果新来者是一个小群体，他们就有机会建立合作。
+命题6：能以最小p值的一个小群体侵入“总是背叛”的策略是那些具有最大识别力的策略，如“一报还一报”
+命题7：如果一个善良的策略不能被单个个体侵入，那么它也不能被这类个体的小群体侵入。如果一个善良的策略能够阻止其他策略的单一个体侵入，那么它就能阻止小群体的入侵，不论它有多大。
+命题8：如果一个规则是集体稳定的，那么它就是领地稳定的&lt;/p&gt;
+&lt;h2&gt;如何有效地选择：&lt;/h2&gt;
+&lt;p&gt;1、不要嫉妒
+人们习惯于考虑零和博弈，在这种情况下，一个人赢，另一个人就输。然而生活中的大多数情况都是非零和的。一般来说，双方可以都做得很好，也可以都做得很差。双方的合作是可能的，但并不是总能实现。&lt;/p&gt;
+&lt;p&gt;人们倾向于采用相对的标准，这个标准经常把对方的成功与自己的成功联系起来。这种标准导致了嫉妒，嫉妒又导致企图抵消对方已经得到的优势。在“囚徒困境”形式下，抵消对方的优势只能通过背叛来实现。但是背叛导致更多的背叛和对方的惩罚。因此嫉妒是自我毁灭。&lt;/p&gt;
+&lt;p&gt;要求自己比对方做得好不是一个很好的标准，除非你的目的是消灭对方。在大多数情况下，这个目的是不可能实现的，或者追求这个目的有可能导致危险的冲突。如果你并不想消灭对方，比较你的得分与对方的得分就可能产生自我毁灭的嫉妒。一个更好的相对标准是把你所做的与处在相同情况下的其他人做对比。对于一个给定的对方策略，你是否做得最好？其他人在这种情况下能做得更好么？这就是检验表现是否成功的一个很好的标准。&lt;/p&gt;
+&lt;p&gt;“一报还一报”由于与其他多种多样的策略相处得很好而赢得了竞赛。平均来说，它比竞赛中的其他任何策略都做得更好。但是“一报还一报”从来没有一次在游戏中比对方得更多的分。&lt;/p&gt;
+&lt;p&gt;在长时间的“重复囚徒困境”中，其他人的成功是你自己成功的前提。&lt;/p&gt;
+&lt;p&gt;2、不要首先背叛
+决定一个规则表现如何的唯一最好的特征是这个规则是否善良（不首先背叛）。&lt;/p&gt;
+&lt;p&gt;3、对合作与背叛都要给予回报
+“一报还一报”是具有最大识别力的。&lt;/p&gt;
+&lt;p&gt;4、不要耍小聪明
+在“囚徒困境”的情况下人们容易耍小聪明，然而复杂的规则并不比简单的规则做得更好。事实上，所谓最大化规则表现很差就是因为它们经常陷入双方背叛。这些规则的共同问题是，使用一些复杂的方法来推断对方。而这些推断常常是错误的。一部分问题是对方经常用试探性的背叛来表明它不会被引诱而合作，但是问题的关键是这些最大化规则没有考虑到它自己的行为会引起对方的变化。&lt;/p&gt;
+&lt;p&gt;“一报还一报”能够取得巨大的成功的原因之一是它具有很大的清晰性，即它非常容易被对方理解。当你使用“一报还一报”策略时，对方有很好的机会去理解你在干什么。你对任何背叛的一对一的反应是一个很容易被意识到的模式。而且你的未来行为是能被预测的。一旦这些情况发生了，对方能容易地发现应付“一报还一报”的最好方式就是与他合作。&lt;/p&gt;
+&lt;p&gt;在下棋时，让你的对手猜疑你的企图是很有用的，你的对手越是怀疑，他（或她）的策略就越没效果。在对手的任何无效行为就是你的利益的零和博弈中，隐瞒你的企图是很有用。但是在非零和情况下，如此聪明不总是有好处的。&lt;/p&gt;
+&lt;h2&gt;如何促进合作&lt;/h2&gt;
+&lt;p&gt;1、增大未来的影响
+如果未来相对于现在是足够重要的话，双方的合作就会是稳定的。当未来相对于现在不足够重要时，没有任何形式的合作是稳定的。有两个基本的方法增加未来的影响：是相互作用更持久和使相互作用更频繁。&lt;/p&gt;
+&lt;p&gt;增加两个给定的个体之间的相互接触频率的一个好方法是排除第三者。一个有地方性基础的公司只和在同一地方的公司做买卖。同样，任何专业化公司也趋向于仅限与少数几个公司接触以便使这种接触更加频繁。&lt;/p&gt;
+&lt;p&gt;当一个问题需要不同部门之间协调时，等级结构允许把这个问题提交给更高一级的政策制定者，这些人通常只处理这类问题。通过把人们束缚在长期的和多等级的游戏中，组织机构增加了未来相互接触的次数和重要性，因而促进了那些个人之间相互接触比较困难的大群体之间的合作的出现。进而导致了处理更大更复杂的问题的组织进化。&lt;/p&gt;
+&lt;p&gt;在标准收益值（T=5，R=3，P=1，S=0）和中等折扣系数（w=0.9）的情况下，小群体成员只要有5%与其他小群体成员接触的机会，就能使合作在一个“小人”的世界里产生。&lt;/p&gt;
+&lt;p&gt;集中接触是使两个人经常见面的一个方法。在协商谈判中，另一个使接触更加频繁的方法是把问题分解成若干的部分。许多小的步骤比只有少数大的步骤更有助于促进合作。这种促进合作的稳定的分解是通过使当前步的欺骗所得少于以后的步骤中潜在的合作所得来实现的。&lt;/p&gt;
+&lt;p&gt;2、改变收益值
+摆脱“囚徒困境”是政府的一个主要功能：即在个体没有个人激励去合作时保证他们无论如何也得做那些对社会有用的事。法律使人们交税，不偷盗，忠实履行与陌生人的合同。政府所做的正是改变有效的收益值。如果你逃避交税，你就可能被送进监狱。这种前景使得背叛的选择没那么吸引人了。&lt;/p&gt;
+&lt;p&gt;在收益结构上的大变化能够改变相互作用使得情况不再是一个“囚徒困境”。如果对背叛的惩罚是如此之大以至于不管对方如何选择，从短期来说合作都是最好的选择的话，那么就不再有困境。&lt;/p&gt;
+&lt;p&gt;3、教育人们互相关心
+毫无疑问，在这样一个关心他人的社会里，即使遇到“囚徒困境”，成员之间也容易达成合作。&lt;/p&gt;
+&lt;p&gt;4、教育人们要回报
+从道德的观点来看，最好的策略是无条件合作。无条件合作将会宠坏对方，并为社会留下了改造被宠坏者的负担。这说明回报是比无条件合作更好的道德基础。&lt;/p&gt;
+&lt;p&gt;“一报还一报”的麻烦在于一旦结下仇恨，它就会无休止地继续下去。所以，一个更好的策略可能是一报还十分之九报。&lt;/p&gt;
+&lt;p&gt;5、改进辨别能力
+从过去的接触中识别对方并记得这些接触的一些相关特征，这种能力对合作的持续是必要的。没有这个能力，一个人就不可能使用任何形式的回报，因此也就不能鼓励对方合作。&lt;/p&gt;
+&lt;h2&gt;社会学应用&lt;/h2&gt;
+&lt;p&gt;这本书最终将以上理论运用于社会学。主要是以下几个方面：&lt;/p&gt;
+&lt;p&gt;1、标记，成见，地位等级&lt;/p&gt;
+&lt;p&gt;2、信誉和威慑&lt;/p&gt;
+&lt;p&gt;3、政府和被统治者（即使最强有力的政府也不能强迫推行它的政策。为了有效的控制，政府必须诱导大多数被统治者服从它的政策。&lt;em&gt;作者不知道中国么？&lt;/em&gt;）&lt;/p&gt;
+&lt;p&gt;4、领地&lt;/p&gt;
+&lt;p&gt;合作理论的主要结论是令人鼓舞的，它们说明即使是在一个其他人不愿合作的世界里，合作仍然可以通过一小群准备回报合作的个体来产生。分析还表明合作能发展的两个关键前提是合作要基于回报和未来的影响要足够重要以使得回报稳定。但是，基于回报的合作一旦在群体中建立，它就能保护自己不受非合作策略的侵入。&lt;/p&gt;
+&lt;p&gt;“一报还一报”的成功是由于它的善良性、可激怒性、宽容性和清晰性。它的善良性意味着它决不会首先背叛，这个特性防止它陷入不必要的麻烦；它的可激怒性使对方一旦尝试背叛后就不敢坚持；它的宽容性有助于恢复双方合作；它的清晰性使得它的行为方式容易被辨别，一旦被识别，就容易看出与“一报还一报”相处的最好方式就是与它合作。&lt;/p&gt;
+&lt;p&gt;合作能从小群体开始，在善良、可激怒和某种程度的宽容的规则中逐步成长，并且一旦成为一个群体，采用这种有识别力的策略的个体就能保护自己不受侵入，总体的合作水平是在上升而不是下降。换句话说：合作的进化是不可逆转的。&lt;/p&gt;</summary><category term="读书笔记"></category><category term="博弈论"></category><category term="社会学"></category></entry><entry><title>《乔布斯传》读后感</title><link href="http://blog.kuaiwan.com/read-about-steve-jobs.html" rel="alternate"></link><updated>2012-10-20T14:39:00+08:00</updated><author><name>火山</name></author><id>tag:blog.kuaiwan.com,2012-10-20:read-about-steve-jobs.html</id><summary type="html">&lt;p&gt;乔布斯逝世一周年终于抽了3天时间把乔布斯传看完了，收获还是很多的。比花掉大量时间刷微博了解的乔布斯的内容有价值得多。&lt;/p&gt;
+&lt;p&gt;首先，乔布斯是叙利亚血统；他从生下来就和大多数美国白人不一样吧。乔布斯的童年没有想象得那么糟糕；毕竟他的父母都很正常，疼爱收养的子女；也会陪伴乔布斯在家里做一些活。书中有描写乔布斯特立独行的一面，但真的不是一个从小就性格暴戾的魔王。慈爱的父母可能对他会过度的放纵，培养了自以为是的根基。乔布斯从他父亲那里学到了：如果讨价还价做买卖、如何精工细作、如何对自己的手艺足够诚实；这些东西在今后的人生中一直指引着他。我自己的脾气不好，可能也和我父母的放任有关吧。在现在的城市里，没有旷野、没有车库、我们的下一代如何接触我们劳作时状态和精神呢？他们除了从父母身上学到工作是个不好的事情，还能学到什么呢？&lt;/p&gt;
+&lt;p&gt;乔布斯的学习是不值得一提，大学生涯却影响巨大。我觉得他工作后的暴戾性格与大学时期的生活关系最大。迷幻剂、宗教、捣乱、共产主义公社，他有着强烈的反抗情绪。这中反抗情绪后面变成了不可阻挡的超凡勇气。交的几个朋友，也让他非常重视说服和个人魅力。&lt;/p&gt;
+&lt;p&gt;咄咄逼人的目光、不可争辩的说服力，甚至狂暴的脾气应该都是好处的产物。他无所顾忌的性格和强大的说服能力，让他显现出成为了一个优秀的销售人员的潜力。他说服了所有人，赚到了他的第一桶金：APPLE I型电脑。&lt;/p&gt;
+&lt;p&gt;乔布斯早期工作是非常顺利的, 他幸运地找到了一个足够低调的天才：沃兹。通过沃兹的帮助，他轻松地进入了最前沿的科技产业。早期工作的一帆风顺应该是极大地强化了乔布斯的自信，大家都在飞速竞争，使他非常紧张的。人的地位在增长，脾气会越来越大的。还特别的追求完美的人，又没受过什么打击，脾气会更大吧。一般人都会注意控制自己的情绪，而乔布斯却丝毫不会注意这些；所以在普通人眼里他就是个恶魔。也正是他这种恶魔驱动了一些天才为了他的目标工作。既想达成目标，又要大家都喜欢；在这个追求极致的时代几乎是不可能的。&lt;/p&gt;
+&lt;p&gt;乔布斯早期的成功，得益于马库拉的帮助。20岁左右就能开发出产品，并拉到风投。他从施乐公司搞到了图形界面技术，Mac开启了图形化个人电脑时代。不过由于在Mac的开发上打击其他同事，为后来的出走埋下了隐患。公司做大了，需要良好的管理；乔布斯不太容易相处，又太专注于产品和技术，所以他找来百事的斯卡利。也就有了那句经典的话：“你是想卖一辈子糖水，还是想抓住机会来改变世界？”其实，斯卡利也不过是马库拉找来专门管理乔布斯的。&lt;/p&gt;
+&lt;p&gt;斯卡利的弱点，从最开始乔布斯就应该知道，但是危害有多深他就未必知道。对产品没有热情的人，如何领导产品型公司是很严峻的挑战。事实证明，当时乔布斯的产品方向是对的，但是大家都反对他。从性格上来讲真的很难有人会喜欢他，从产品上来讲他比大家思想更超前。但被从自己创建的公司赶出来，只有一个原因，他的脾气真的太差了。如果你的观点是对的，也总得找到机会让人听你说。斯卡利和乔布斯的最终对决也是董事会和乔布斯的对决，斯卡利不是最好的选择，但是董事会已经和这个不受任何约束的人开战了。结果是，乔布斯经过很多徒劳的努力，也没能保持在苹果公司的一个较低的职位。对于公司的高层人员任用来说，有足够的考察和评估是非常重要的，当然最重要的是想用什么人。&lt;/p&gt;
+&lt;p&gt;不管怎么说，他赚到了足够的钱。他可以重新开始，他带走了6个重要的员工，因此还和董事会搞得决裂。他还是无所顾忌地给工厂搞豪华装修。离开苹果的十年也没有太多惊奇，他在NeXT并没有取得任何成功。这或许跟他不愿意和苹果在同一个领域竞争有很大的关系。他在NeXT开发的产品服务于教育领域，和之前的路子大不一样。所以做产品，首先是大势。不过从后来乔布斯回归苹果后的操作系统演进来看，在NeXT的工作还是给了乔布斯很深的积累。 &lt;/p&gt;
+&lt;p&gt;乔布斯做NeXT时同时投资做了皮克斯，这个确实是一段非常传奇的故事。皮克斯的主创人员有非常前沿的思想，也在3D动画技术上非常锐意进取。这点和乔布斯追求极致、追求领先不谋而合。并且皮克斯和迪斯尼的关系，也和苹果和IBM很像。正是因为皮克斯和乔布斯有很多内在的相似之处，乔布斯才坚持支持皮克斯的动画电影之路。和Mac革了电脑业务的命一样，3D动画电影也革了动画电影的命。读到这些故事的时候，让我非常感触的是，乔布斯真的没有像对待苹果员工一样对待皮克斯的创作人员。其实乔布斯是懂得控制情绪的，可能只是电脑业界的那种机器味儿让他非常地憎恨。他没有太多的指手画脚了，他支持那些新的酷的想法。从这个意义上来说，这段时间在皮克斯是他做得最好的时候。在这段时光中，让乔布斯更进一步认识到制造消费产品的好处是多么巨大，而制作细分市场产品多么没有前途。&lt;/p&gt;
+&lt;p&gt;乔布斯也是有家庭生活的，以前我以为他就是一个没有家庭的怪物。实际上，他有一个非常合适他的妻子：劳伦.鲍威尔；这也是他的感情世界唯一值得一提的了。他和劳伦的儿子叫：里德. 保罗. 乔布斯；看得出他对自己的养父深怀感激。他和妹妹、女儿、前妻、父亲等的关系就和他的性格一样，没有任何安定的成分。&lt;/p&gt;
+&lt;p&gt;1996年12月20日，乔布斯回到了苹果。他出走的十年，苹果没有站在潮流的最前端，产品策略异常混乱。回去之后，乔布斯大力砍掉了绝大部分的产品线；并重组了董事会，意外地得到了微软的支持（微软是怕苹果倒了告他垄断么？）。推荐大家看一下乔布斯复出1997年MacWord的的视频：http://v.youku.com/v_show/id_XMzIwMjcxOTQ0.html 。马库拉也离开董事会了，现在看来乔布斯赢了；其实现在还没有赢家，因为苹果已经是一家濒临破产的公司了。&lt;/p&gt;
+&lt;p&gt;乔布斯回归后的第一年，乔布斯裁掉了3000多人。1997年苹果亏损10.4亿美元，1998年苹果盈利3.09亿美元。相比之下，前任们真的是在打瞌睡啊。他回去后，乔纳森.艾弗就留了下来。他们一起琢磨那些可以改变世界的产品。乔布斯会花很多时间和设计师一起在工作室内工作，工作室就是一个制作产品原型的地方。尚处在设计阶段的产品也会摆在6个长条钢桌上，供乔布斯和设计师把玩。所以苹果的产品做出来，视觉和触觉上都那么棒就不觉得奇怪了。作为一个产品人，乔布斯做到了全身心的投入。&lt;/p&gt;
+&lt;p&gt;接下来，乔布斯就开始接连颠覆音乐、手机、电子书和游戏等市场了。乔布斯最多产的时光到了，iPod、iPhone、iPad接连上市。其中iPod应该是做得最漂亮的，因为它的出现就宣告了随身听和CD播放器的死亡。&lt;/p&gt;</summary><category term="读书笔记"></category></entry></feed>

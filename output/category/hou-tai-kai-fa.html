@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8">
+        <title>快玩团队博客 - 后台开发</title>
+        <link rel="stylesheet" href="http://blog.kuaiwan.com/theme/css/main.css">
+                <link href="http://blog.kuaiwan.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="快玩团队博客 Atom Feed" />
+                
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://blog.kuaiwan.com/">快玩团队博客 </a></h1>
+                <nav><ul>
+                                                                                    <li class="active"><a href="http://blog.kuaiwan.com/category/hou-tai-kai-fa.html">后台开发</a></li>
+                                    <li ><a href="http://blog.kuaiwan.com/category/du-shu-bi-ji.html">读书笔记</a></li>
+                                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://blog.kuaiwan.com/skydns-get-started.html">SkyDNS 动手玩</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2013-11-23T23:00:00">
+                六 23 十一月 2013
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="http://blog.kuaiwan.com/author/huo-shan.html">火山</a>
+        </address>
+        <p>In <a href="http://blog.kuaiwan.com/category/hou-tai-kai-fa.html">后台开发</a>. </p>
+<p>tags: <a href="http://blog.kuaiwan.com/tag/hou-tai-kai-fa.html">后台开发</a><a href="http://blog.kuaiwan.com/tag/jia-gou.html">架构</a></p>
+</footer><!-- /.post-info --><h3>资源</h3>
+<p>github: https://github.com/skynetservices/skydns</p>
+<ul>
+<li>编译：go build .</li>
+<li>启动脚本：sudo /home/ken/bin/skydns --domain=kuaiwan.local --data=/home/ken/bin/.skydns_data</li>
+</ul>
+<h3>增加DNS解析服务器</h3>
+<div class="highlight"><pre><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">resolv</span><span class="p">.</span><span class="n">conf</span>
+<span class="err">增加</span><span class="o">:</span> <span class="n">nameserver</span> <span class="n">localhost</span>
+</pre></div>
+
+
+<h3>增加DNS记录</h3>
+<p><code>curl -X PUT -L http://localhost:8080/skydns/services/1001 -d '{"Name":"TestService","Version":"1.0.0","Environment":"Production","Region":"East","Host":"localhost","Port":80,"TTL":4000}'</code></p>
+<p><code>curl -X PUT -L http://localhost:8080/skydns/services/1002 -d '{"Name":"TestService","Version":"1.0.0","Environment":"Production","Region":"East","Host":"192.168.60.61","Port":80,"TTL":4000}'</code></p>
+<h3>测试</h3>
+<p><code>dig @localhost testservice.production.kuaiwan.local SRV</code></p>
+<p>本地其他客户端可能发送DNS请求给我们的DNS服务器：</p>
+<div class="highlight"><pre><span class="mi">2013</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">23</span> <span class="mi">22</span><span class="o">:</span><span class="mi">46</span><span class="o">:</span><span class="mi">59</span> <span class="n">Received</span> <span class="n">DNS</span> <span class="n">Request</span> <span class="k">for</span> <span class="s">&quot;localdomain.&quot;</span> <span class="n">from</span> <span class="s">&quot;127.0.0.1:35947&quot;</span>
+<span class="mi">2013</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">23</span> <span class="mi">22</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mo">01</span> <span class="n">Received</span> <span class="n">DNS</span> <span class="n">Request</span> <span class="k">for</span> <span class="s">&quot;ken-virtualbox.localdomain.&quot;</span> <span class="n">from</span> <span class="s">&quot;127.0.0.1:52030&quot;</span>
+<span class="mi">2013</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">23</span> <span class="mi">22</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mo">03</span> <span class="n">Received</span> <span class="n">DNS</span> <span class="n">Request</span> <span class="k">for</span> <span class="s">&quot;gc._msdcs.localdomain.&quot;</span> <span class="n">from</span> <span class="s">&quot;127.0.0.1:33695&quot;</span>
+</pre></div>
+
+
+<h3>python客户端使用</h3>
+<p>内置dns库</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">dns</span> 
+<span class="n">ans</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">default_resolver</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;testservice.production.kuaiwan.local.&#39;</span><span class="p">,</span> <span class="s">&#39;SRV&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">ans</span><span class="o">.</span><span class="n">expiration</span>
+<span class="k">print</span> <span class="n">ans</span><span class="o">.</span><span class="n">rrset</span>
+<span class="k">print</span> <span class="n">ans</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">answer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">testservice</span><span class="o">.</span><span class="n">production</span><span class="o">.</span><span class="n">kuaiwan</span><span class="o">.</span><span class="n">local</span><span class="o">.</span> <span class="mi">929</span> <span class="n">IN</span> <span class="n">SRV</span> <span class="mi">10</span> <span class="mi">50</span> <span class="mi">80</span> <span class="n">localhost</span><span class="o">.</span>
+<span class="n">testservice</span><span class="o">.</span><span class="n">production</span><span class="o">.</span><span class="n">kuaiwan</span><span class="o">.</span><span class="n">local</span><span class="o">.</span> <span class="mi">929</span> <span class="n">IN</span> <span class="n">SRV</span> <span class="mi">10</span> <span class="mi">50</span> <span class="mi">80</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">60.61</span><span class="o">.</span>
+</pre></div>
+
+
+<p>注意事项：</p>
+<div class="highlight"><pre><span class="o">-</span> <span class="n">SkyDNS</span><span class="err">是</span><span class="n">TCP</span><span class="err">服务器</span>
+<span class="o">-</span> <span class="n">rdclass</span><span class="err">的取值是</span><span class="mi">1</span><span class="err">，表示</span><span class="n">IN</span>
+<span class="o">-</span> <span class="n">rdtype</span><span class="err">的取值是</span><span class="n">SRV</span><span class="err">，取值是</span><span class="mi">33</span>
+</pre></div>
+
+
+<p>使用pyDNS</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">DNS</span>
+<span class="n">DNS</span><span class="o">.</span><span class="n">ParseResolvConf</span><span class="p">()</span>
+<span class="n">srv_req</span> <span class="o">=</span> <span class="n">DNS</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">qtype</span><span class="o">=</span><span class="s">&#39;srv&#39;</span><span class="p">)</span>
+<span class="n">srv_result</span> <span class="o">=</span> <span class="n">srv_req</span><span class="o">.</span><span class="n">req</span><span class="p">(</span><span class="s">&#39;testservice.production.kuaiwan.local&#39;</span><span class="p">)</span>
+<span class="n">srv_result</span><span class="o">.</span><span class="n">answers</span>
+<span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;testservice.production.kuaiwan.local&#39;</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">),</span> <span class="s">&#39;typename&#39;</span><span class="p">:</span> <span class="s">&#39;SRV&#39;</span><span class="p">,</span> <span class="s">&#39;classstr&#39;</span><span class="p">:</span> <span class="s">&#39;IN&#39;</span><span class="p">,</span> <span class="s">&#39;ttl&#39;</span><span class="p">:</span> <span class="mi">517</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span> <span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;rdlength&#39;</span><span class="p">:</span> <span class="mi">21</span><span class="p">}]</span>
+</pre></div>
+
+
+<h3>应用</h3>
+<p>可以考虑改造Rest接口的客户端模块，让其支持解析ServiceName并获取服务IP列表。现在python客户端测试看来默认没有缓存，可能需要自己实现DNS结果缓存机制。</p><p>There are <a href="http://blog.kuaiwan.com/skydns-get-started.html#disqus_thread">comments</a>.</p>                </article>
+                                    <p class="paginator">
+        Page 1 / 1
+    </p>
+                            </aside><!-- /#featured -->
+                                                </ol><!-- /#posts-list -->
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://www.kuaiwan.com">快玩游戏</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://blog.kuaiwan.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="http://weibo.com/kuaiwan">微博</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'dntgss';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

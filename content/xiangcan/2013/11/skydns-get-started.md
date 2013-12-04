@@ -67,3 +67,4 @@ github: https://github.com/skynetservices/skydns
 
 可以考虑改造Rest接口的客户端模块，让其支持解析ServiceName并获取服务IP列表。现在python客户端测试看来默认没有缓存，可能需要自己实现DNS结果缓存机制。
 
+FINAL TEST

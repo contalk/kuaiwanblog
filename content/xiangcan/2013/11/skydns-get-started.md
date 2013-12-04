@@ -29,7 +29,6 @@ github: https://github.com/skynetservices/skydns
 
 本地其他客户端可能发送DNS请求给我们的DNS服务器：
 
-    :::sh
     2013/11/23 22:46:59 Received DNS Request for "localdomain." from "127.0.0.1:35947"
     2013/11/23 22:47:01 Received DNS Request for "ken-virtualbox.localdomain." from "127.0.0.1:52030"
     2013/11/23 22:47:03 Received DNS Request for "gc._msdcs.localdomain." from "127.0.0.1:33695"

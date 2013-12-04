@@ -1,7 +1,7 @@
 Title: Python资源入口汇总
 Slug: python-sources
 Date: 2013-08-27
-Category: sources
+Category: 后台开发
 Tags: sources
 
 整理中，进度30%

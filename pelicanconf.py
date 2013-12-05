@@ -9,6 +9,7 @@ TIMEZONE = 'Asia/Shanghai'
 
 DEFAULT_LANG = 'zh'
 DISQUS_SITENAME = 'dntgss'
+GOOGLE_ANALYTICS = 'UA-17353954-7'
 
 # Blogroll
 LINKS =  ((u'快玩游戏', 'http://www.kuaiwan.com'),

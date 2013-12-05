@@ -20,7 +20,7 @@ SOCIAL = ((u'微博', 'http://weibo.com/kuaiwan'),
 
 DEFAULT_PAGINATION = 10
 
-PDF_GENERATOR = False 
-STATIC_PATHS = ["images"]
+PDF_GENERATOR = False
+# STATIC_PATHS = ["images"]
 
 

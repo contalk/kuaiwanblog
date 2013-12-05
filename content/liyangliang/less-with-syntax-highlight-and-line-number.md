@@ -78,7 +78,7 @@ less 是一个很方便的翻页器（pager），但不足的是不能语法高�
 
 这样一来，就可以在 less 时既能语法高亮，还能查看行号，感觉很不错的。试着贴一张效果图看看。
 
-![less-with-syntax-highlight-and-line-number](http://ww3.sinaimg.cn/large/65df5320tw1ea3o9tmdirj20ch0alq3h.jpg)
+![less-with-syntax-highlight-and-line-number](/static/images/liyangliang/65df5320tw1ea3o9tmdirj20ch0alq3h.jpg)
 
 # 4. References
 

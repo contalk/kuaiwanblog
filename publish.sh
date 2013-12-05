@@ -1,1 +1,1 @@
-make publish rsync_upload
+make publish 

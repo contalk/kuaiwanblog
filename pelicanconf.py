@@ -8,7 +8,7 @@ SITEURL = 'http://blog.kuaiwan.com'
 TIMEZONE = 'Asia/Shanghai'
 
 DEFAULT_LANG = 'zh'
-DISQUS_SITENAME = 'dntgss'
+DISQUS_SITENAME = 'kuaiwanblog'
 GOOGLE_ANALYTICS = 'UA-17353954-7'
 
 # Blogroll

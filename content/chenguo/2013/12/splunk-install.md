@@ -14,6 +14,7 @@ Author: chenguo
 2) 安装：
 安装splunk企业版:
 
+    useradd splunk
     rpm -i --prefix=/opt splunk-6.0-182037-linux-2.6-x86_64.rpm
     export SPLUNK_HOME=/opt/splunk
     export PATH=$SPLUNK_HOME/bin:$PATH
@@ -23,6 +24,13 @@ Author: chenguo
     rpm -i --prefix=/opt splunkforwarder-6.0-182037-linux-2.6-x86_64.rpm
     export SPLUNK_HOME=/opt/splunk
     export PATH=$SPLUNK_HOME/bin:$PATH
+
+3)管理命令：
+
+    splunk start
+    splunk stop
+    splunk restart
+    splunk status
 
 ### 2. 配置
 

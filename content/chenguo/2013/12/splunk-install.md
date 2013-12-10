@@ -1,6 +1,6 @@
 Title: splunk安装介绍
 Date: 2013-12-05 15:30
-Category: 数据分析
+Category: 后台开发
 Tags: linux,splunk
 slug: splunk-install
 Author: chenguo

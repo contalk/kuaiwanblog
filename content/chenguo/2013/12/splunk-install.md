@@ -41,7 +41,7 @@ Author: chenguo
     #设置开机启动
     ./splunk enable boot-start
     #配置转发目的地址及端口
-    ./splunk add forward-server 10.0.0.175:9999
+    ./splunk add forward-server $ip:9999
     #配置监控目录或文件
     ./splunk add monitor $DIR
     #开启转发

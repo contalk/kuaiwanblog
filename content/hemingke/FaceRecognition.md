@@ -1,6 +1,6 @@
 title: 关于人脸识别和检索的项目
 slug: 关于人脸识别和检索的项目
-date: 2013-01-03 13:00 
+date: 2014-01-03 13:00 
 tags: 技术，算法，理论
 category: 后台开发
 author: Mingke HE

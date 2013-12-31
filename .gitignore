@@ -1,2 +1,6 @@
+output
 output/*
 *.pid
+*.pyc
+nohup.out
+*.swp

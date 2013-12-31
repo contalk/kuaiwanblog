@@ -62,7 +62,9 @@ function start_up(){
   $PELICAN --debug --autoreload -r $INPUTDIR -o $OUTPUTDIR -s $CONFFILE $PELICANOPTS &
   echo $! > $PELICAN_PID
   cd $OUTPUTDIR
-  python -m SimpleHTTPServer &
+#  python -m SimpleHTTPServer &
+# 修改监听端口，因为默认端口8000已经被占用
+  python -m SimpleHTTPServer 8090 >/tmp/blog_view.log & 
   echo $! > $SRV_PID
   cd $BASEDIR
 }

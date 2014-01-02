@@ -3,7 +3,7 @@
 
 AUTHOR = u"快玩"
 SITENAME = u"快玩团队博客"
-SITEURL = 'http://localhost:8000'
+SITEURL = 'http://192.168.1.90:8090'
 
 TIMEZONE = 'Asia/Shanghai'
 

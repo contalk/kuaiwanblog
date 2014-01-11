@@ -4,3 +4,4 @@ output/*
 *.pyc
 nohup.out
 *.swp
+pelicanconf.py

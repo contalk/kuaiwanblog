@@ -21,13 +21,15 @@ author: 火山
  - 提交image变更：docker commit old new
  - 推送image：docker push xxx/xxx
 
-注意一下几点：
+注意以下几点：
 	
 1. 如果不指定名字，每次docker run后会新增一个container
 2. 如果指定了名字，用docker run的时候名字不能重复使用的
 3. container的名字，可以用name也可以用UUID的前几位
-4. container退出后，参数是回保存下来的，后续启动不需要再次输入参数
+4. container退出后，参数是会保存下来的，后续启动不需要再次输入参数
 5. 当环境装好了之后，最好保存无entry point的image，否则比较难在这个基础上继续更改
+
+docker现在尚未release 1.0，有些风险。
 
 # skydock
 
@@ -38,13 +40,14 @@ author: 火山
 安装测试要注意几个问题：
 
 1. 保证docker0的IP地址为：172.17.42.1，如果不是用ifconfig docker0 172.17.42.1 netmask 255.255.0.0
-2. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到
+2. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到，这里浪费掉我好多时间
 
 实际运行注意的问题：
 
 1. 服务的格式为：{service_name}.{environment}.kw，当然前提是运行skydns时指定-domain=kw
 2. skydock是没有地方可以指定service_name的；他是使用repository的名称的。比如：fabware/grounduser，那么service_name就是grounduser
 
+skydock通过遍历docker正在运行的container信息设置DNS，所以如果它挂掉了DNS就无法更新了。
 
 # REST框架的更改
 
@@ -162,3 +165,6 @@ http_path.py源代码如下：
     urllib2.install_opener(_opener)
 
 # 最后我只能说这玩意吊炸天
+
+把host配置的问题解决掉了，就可以发布对运行环境完全无依赖的代码和配置了。发布程序就变成了发布container。
+

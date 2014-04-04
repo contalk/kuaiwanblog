@@ -1,6 +1,6 @@
 title: 用docker做服务发现
 slug: service-discovery-with-docker
-date: 2014-04-04 17:32
+date: 2014-04-04 12:32
 tags: 后台开发, 架构
 category: 后台开发
 author: 火山

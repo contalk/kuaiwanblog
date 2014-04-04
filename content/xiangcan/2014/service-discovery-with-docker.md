@@ -36,8 +36,9 @@ author: 火山
 根据项目文档可以很快装好软件。
 
 要注意几个问题：
-1、保证docker0的IP地址为：172.17.42.1，如果不是用ifconfig docker0 172.17.42.1 netmask 255.255.0.0
-2、运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到
+
+1. 保证docker0的IP地址为：172.17.42.1，如果不是用ifconfig docker0 172.17.42.1 netmask 255.255.0.0
+2. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到
 
 # REST框架的更改
 

@@ -23,11 +23,11 @@ author: 火山
 
 注意一下几点：
 	
-	1、如果不指定名字，每次docker run后会新增一个container
-	2、如果指定了名字，用docker run的时候名字不能重复使用的
-	3、container的名字，可以用name也可以用UUID的前几位
-	4、container退出后，参数是回保存下来的，后续启动不需要再次输入参数
-	5、当环境装好了之后，最好保存无entry point的image，否则比较难在这个基础上继续更改
+1. 如果不指定名字，每次docker run后会新增一个container
+2. 如果指定了名字，用docker run的时候名字不能重复使用的
+3. container的名字，可以用name也可以用UUID的前几位
+4. container退出后，参数是回保存下来的，后续启动不需要再次输入参数
+5. 当环境装好了之后，最好保存无entry point的image，否则比较难在这个基础上继续更改
 
 # skydock
 

@@ -35,10 +35,16 @@ author: 火山
 
 根据项目文档可以很快装好软件。
 
-要注意几个问题：
+安装测试要注意几个问题：
 
 1. 保证docker0的IP地址为：172.17.42.1，如果不是用ifconfig docker0 172.17.42.1 netmask 255.255.0.0
 2. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到
+
+实际运行注意的问题：
+
+1. 服务的格式为：{service_name}.{environment}.kw，当然前提是运行skydns时指定-domain=kw
+2. skydock是没有地方可以指定service_name的；他是使用repository的名称的。比如：fabware/grounduser，那么service_name就是grounduser
+
 
 # REST框架的更改
 

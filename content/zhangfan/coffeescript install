@@ -44,5 +44,6 @@
     #如果你习惯在sublime 下面做代码编写可以安装 coffeescript的插件包
     > https://github.com/aponxi/sublime-better-coffeescript #提供了相应的安装方式
     
-    
+    #在windows下使用coffeescript 有一个工具叫Koala 是腾讯的技术团队开发的可以用下，目前还支持LESS, SASS, Compass
+    #不过在 linux, mac 都能运行
     

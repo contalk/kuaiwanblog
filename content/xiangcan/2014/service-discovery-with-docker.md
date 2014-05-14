@@ -40,7 +40,8 @@ docker现在尚未release 1.0，有些风险。
 安装测试要注意几个问题：
 
 1. 保证docker0的IP地址为：172.17.42.1，如果不是用ifconfig docker0 172.17.42.1 netmask 255.255.0.0
-2. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到，这里浪费掉我好多时间
+2. 如果重新设置了docker0 的IP，注意重新启动docker后container才可以ping得通
+3. 运行redis-cli时，传入dns参数：--dns=172.17.42.1 ，否则域名解析不到，这里浪费掉我好多时间
 
 实际运行注意的问题：
 

@@ -1,0 +1,49 @@
+学习一门新的语言其实没那么难.
+
+首先我觉得学习语言不要想着能干什么，你能把它掌握的怎么样，千万不要这么去想。
+
+年初的时候学习了coffeescript，在社区的项目中也有所使用。
+
+对这门语言我的认为就是：简洁，干净，可读性高。在js的场景中更像是在写python 所以我喜欢
+
+为什么学习他，为什么使用它？
+    
+    学习：
+    1. 学习他不只是为了要使用他，是因为我也很久（大概超过20个月）没有去学习新的技术语言或则框架应用，
+    前端技术在不断发生变化，新技术新框架不断的出现，如果只停留在几年前都在用的jQuery里，似乎显得很不上进啊。
+
+    2. 我是一个比较懒的人，所以我选择很简单，因为：简单
+
+    3. 我很想改变自己对前端的一些认识，或则说我对自己的技术很不满，但也没有去寻找好的改进方向，那我认为改变习惯是最直接的方式。
+
+    使用：
+    1. 个人觉得代码更少，更紧凑，更清晰（以前的代码没什么组织，各种风格）
+    2. 大幅减少出错率，维护起来更是简单极了
+    3. 使用coffeescript 给我也带来了很多新的学习： r.js(代码压缩), JSLint (检测), 模块化, BackBone, NODE， grunt 一些使用
+    4. 还有就是一些js里面没有的语法调用可以像写python一样来使用比如：a = [1..5] 会自动生成 a = [1, 2, 3, 4, 5]，当然还有
+    更多好用的
+
+它当然好，学习使用如下：
+    # 没有安装node的 先暂停一下，装个NODE再继续， 如果有安装的你就跳过哈直接到 ->继续
+    > git clone git://github.com/joyent/node.git
+    > cd node
+    > ./configure
+    > make
+    > sudo make install
+    
+    # 没安装npm的，个人建议可先装一下npm ，这个是node下目前支持最多的插件库
+    > curl http://npmjs.org/install.sh | sh
+    
+    #继续
+    > sudo npm install -g coffee-script  #coffeescript是依赖于NODE 环境的，所以你想使用coffeescript 得先装node-js
+    
+    #安装完成后你可以试试啦！
+    > coffee -v
+        CoffeeScript version 1.6.3 #目前我用的版本
+    
+    #如果你习惯在sublime 下面做代码编写可以安装 coffeescript的插件包
+    > https://github.com/aponxi/sublime-better-coffeescript #提供了相应的安装方式
+    
+    #在windows下使用coffeescript 有一个工具叫Koala 是腾讯的技术团队开发的可以用下，目前还支持LESS, SASS, Compass
+    #不过在 linux, mac 都能运行
+    
